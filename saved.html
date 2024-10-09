@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Recipes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="saved.css">
+</head>
+<body>
+    <header class="container-fluid">
+        <h1>Saved Recipes</h1>
+    </header>
+    <div class="container" style="max-width: 1160px;">
+        <!-- Navigation Bar -->
+        <nav class="container-fluid">
+            <ul class="nav justify-content-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="recipes.html">Recipes</a></li>
+                <li class="nav-item"><a class="nav-link" href="saved.html">Saved Recipes</a></li>
+                <li class="nav-item"><a class="nav-link" href="myrecipes.html">My Recipes</a></li>
+                <li class="nav-item"><a class="nav-link" href="contactus.html">Contact Us</a></li>
+            </ul>
+        </nav>
+
+       <!-- Search Form -->
+<form method="get" action="/check" id="s">
+    <input type="text" placeholder="search..." name="search">
+    <input type="hidden" value="{(uid)}">
+    <button type="submit" onclick="location.href='/check/?uid={(uid)}'"></button>
+</form>
+
+
+        <!-- Display Recipes -->
+        <div id="recipes-list" class="row mt-4">
+            <!-- Recipes will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';
+        import { getDatabase, ref, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-2pPQQFE91QhJ1jjoAeOmECFCVdkqDzU",
+            authDomain: "flavor-1a23c.firebaseapp.com",
+            databaseURL: "https://flavor-1a23c-default-rtdb.firebaseio.com",
+            projectId: "flavor-1a23c",
+            storageBucket: "flavor-1a23c.appspot.com",
+            messagingSenderId: "185874751125",
+            appId: "1:185874751125:web:9c98cfb3aa74062418459c",
+            measurementId: "G-KB859RPX9N"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+function deleteRecipe(recipeKey) {
+    const recipeRef = ref(db, 'recipes/' + recipeKey);
+    remove(recipeRef)
+        .then(() => {
+            alert("Recipe deleted successfully.");
+            fetchSavedRecipes(); // Refresh the list after deletion
+        })
+        .catch((error) => {
+            console.error("Error deleting recipe:", error);
+            alert("Failed to delete the recipe.");
+        });
+}
+        // Fetch saved recipes
+   // Fetch saved recipes
+
+   
+function fetchSavedRecipes() {
+    const recipesList = document.getElementById('recipes-list');
+    const recipesRef = ref(db, 'recipes');
+
+    onValue(recipesRef, (snapshot) => {
+    console.log(snapshot.val());  // Log the snapshot data for debugging
+    recipesList.innerHTML = ""; // Clear existing recipes
+    snapshot.forEach((childSnapshot) => {
+        const recipe = childSnapshot.val();
+        console.log("Recipe:", recipe);  // Log each individual recipe for debugging
+        const recipeItem = document.createElement('div');
+        recipeItem.classList.add('col-md-4');
+
+        recipeItem.innerHTML = `
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">${recipe.recipeName || "Unnamed Recipe"}</h5>
+                    <div class="ingredients-box border p-3 bg-light">
+                        <p><strong>Ingredients:</strong></p>
+                        <ul>
+                            <li>${recipe.ingredient1 || "N/A"}</li>
+                            <li>${recipe.ingredient2 || "N/A"}</li>
+                            <li>${recipe.ingredient3 || "N/A"}</li>
+                            <li>${recipe.ingredient4 || "N/A"}</li>
+                            <li>${recipe.ingredient5 || "N/A"}</li>
+                        </ul>
+                    </div>
+                    <p><strong>Preparation:</strong> ${recipe.preparation || "N/A"}</p>
+                </div>
+            </div>
+        `;
+        recipesList.appendChild(recipeItem);
+    });
+});
+}
+
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', fetchSavedRecipes);
+    </script>
+    <script src="nav.js"></script>
+</body>
+</html>
