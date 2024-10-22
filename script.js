@@ -13,6 +13,58 @@ const firebaseConfig = {
     measurementId: "G-KB859RPX9N"
   };
 
+let recipes = []; // Store all fetched recipes from Firebase
+
+// Fetch recipes from Firebase
+function fetchRecipes() {
+    const recipesRef = ref(db, 'recipes');
+    onValue(recipesRef, (snapshot) => {
+        recipes = []; // Clear previous recipes
+        snapshot.forEach((childSnapshot) => {
+            const recipe = childSnapshot.val();
+            recipes.push(recipe); // Add each recipe to the array
+        });
+        displayRecipes(recipes); // Display all recipes initially
+    });
+}
+
+// Display recipes on the page
+function displayRecipes(recipesToShow) {
+    const recipeList = document.getElementById('recipeList');
+    recipeList.innerHTML = ''; // Clear existing recipes
+
+    recipesToShow.forEach(recipe => {
+        const recipeCard = document.createElement('div');
+        recipeCard.classList.add('recipe-card');
+        recipeCard.innerHTML = `
+            <h3>${recipe.recipeName}</h3>
+            <p><strong>Ingredients:</strong> ${recipe.ingredient1}, ${recipe.ingredient2}, ${recipe.ingredient3}, ${recipe.ingredient4}, ${recipe.ingredient5}</p>
+            <p><strong>Preparation:</strong> ${recipe.preparation}</p>
+        `;
+        recipeList.appendChild(recipeCard);
+    });
+}
+
+// Filter recipes based on search input
+function filterRecipes() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+    // Filter recipes by name or ingredients
+    const filteredRecipes = recipes.filter(recipe => {
+        const recipeName = recipe.recipeName.toLowerCase();
+        const ingredients = `${recipe.ingredient1} ${recipe.ingredient2} ${recipe.ingredient3} ${recipe.ingredient4} ${recipe.ingredient5}`.toLowerCase();
+        return recipeName.includes(searchTerm) || ingredients.includes(searchTerm);
+    });
+
+    displayRecipes(filteredRecipes); // Display only the filtered recipes
+}
+
+// Event listener for search input
+document.getElementById('searchInput').addEventListener('input', filterRecipes);
+
+// Fetch recipes on page load
+window.onload = fetchRecipes;
+
 function flipCard() {
     const card = document.getElementById('recipeCard');
     if (!isFlipped) {
