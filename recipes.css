@@ -15,9 +15,9 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   nav {
-    background-color: #F7EFE5; /* Background for the navigation bar */
-    padding: 10px 0; /* Padding above and below the nav items */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    background-color: #F7EFE5; 
+    padding: 10px 0; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
   }
   nav ul {
     list-style-type: none;
@@ -88,5 +88,6 @@ body {
       max-width: 120px;
     }
   }
+  
   
   
