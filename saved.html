@@ -12,7 +12,7 @@
         <h1>Saved Recipes</h1>
     </header>
     <div class="container" style="max-width: 1160px;">
-        <!-- Navigation Bar -->
+        
         <nav class="container-fluid">
             <ul class="nav justify-content-center">
                 <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
@@ -23,27 +23,16 @@
             </ul>
         </nav>
 
-       <!-- Search Form -->
-<form method="get" action="/check" id="s">
-    <input type="text" placeholder="search..." name="search">
-    <input type="hidden" value="{(uid)}">
-    <button type="submit" onclick="location.href='/check/?uid={(uid)}'"></button>
-</form>
-
-
-        <!-- Display Recipes -->
         <div id="recipes-list" class="row mt-4">
-            <!-- Recipes will be dynamically inserted here -->
+            
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
-        
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';
-        import { getDatabase, ref, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';
+        import { getDatabase, ref, onValue, set, update } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC-2pPQQFE91QhJ1jjoAeOmECFCVdkqDzU",
             authDomain: "flavor-1a23c.firebaseapp.com",
@@ -55,66 +44,145 @@
             measurementId: "G-KB859RPX9N"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-function deleteRecipe(recipeKey) {
-    const recipeRef = ref(db, 'recipes/' + recipeKey);
-    remove(recipeRef)
-        .then(() => {
-            alert("Recipe deleted successfully.");
-            fetchSavedRecipes(); // Refresh the list after deletion
-        })
-        .catch((error) => {
-            console.error("Error deleting recipe:", error);
-            alert("Failed to delete the recipe.");
+        function fetchSavedRecipes() {
+            const recipesList = document.getElementById('recipes-list');
+            const recipesRef = ref(db, 'recipes');
+
+            onValue(recipesRef, (snapshot) => {
+                recipesList.innerHTML = "";
+                snapshot.forEach((childSnapshot) => {
+                    const recipe = childSnapshot.val();
+                    const recipeKey = childSnapshot.key;
+                    const ratingData = calculateAverageRating(recipe.ratings || []);
+                    const recipeItem = document.createElement('div');
+                    recipeItem.classList.add('col-md-4');
+                    recipeItem.innerHTML = `
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">${recipe.recipeName || "Unnamed Recipe"}</h5>
+                                <div class="ingredients-box border p-3 bg-light">
+                                    <p><strong>Ingredients:</strong></p>
+                                    <ul>
+                                        <li>${recipe.ingredient1 || "N/A"}</li>
+                                        <li>${recipe.ingredient2 || "N/A"}</li>
+                                        <li>${recipe.ingredient3 || "N/A"}</li>
+                                        <li>${recipe.ingredient4 || "N/A"}</li>
+                                        <li>${recipe.ingredient5 || "N/A"}</li>
+                                    </ul>
+                                </div>
+                                <p><strong>Preparation:</strong> ${recipe.preparation || "N/A"}</p>
+                                <div class="rating">
+                                    <p><strong>Average Rating:</strong> ${ratingData.average.toFixed(1)} (${ratingData.count} reviews)</p>
+                                    <div class="stars" id="rating-${recipeKey}">
+                                        ${generateStars(ratingData.average, recipeKey)}
+                                    </div>
+                                </div>
+                                <!-- Review Form -->
+                                <div>
+                                    <h6>Leave a Review:</h6>
+                                    <label for="review-input-${recipeKey}">Review:</label>
+                                    <textarea id="review-input-${recipeKey}" rows="3" placeholder="Write your review..." class="form-control"></textarea>
+                                    <button class="btn btn-primary mt-2" onclick="submitReview('${recipeKey}')">Submit Review</button>
+                                    <div class="reviews mt-2" id="reviews-${recipeKey}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    recipesList.appendChild(recipeItem);
+                });
+            });
+        }
+
+        function calculateAverageRating(ratings) {
+            const count = ratings.length;
+            const sum = ratings.reduce((acc, curr) => acc + curr, 0);
+            return { average: count > 0 ? sum / count : 0, count };
+        }
+
+        function generateStars(rating, recipeKey) {
+            let starsHtml = '';
+            for (let i = 1; i <= 5; i++) {
+                starsHtml += `<span class="star" data-value="${i}" data-recipe-key="${recipeKey}" style="cursor:pointer; color:${i <= rating ? '#ffcc00' : '#ccc'};">&#9733;</span>`;
+            }
+            return starsHtml;
+        }
+
+        function submitReview(recipeKey) {
+            const reviewInput = document.getElementById(`review-input-${recipeKey}`);
+            const reviewText = reviewInput.value.trim();
+
+            if (reviewText === "") {
+                alert("Please enter a review.");
+                return;
+            }
+
+            const reviewsRef = ref(db, `recipes/${recipeKey}/reviews`);
+
+            onValue(reviewsRef, (snapshot) => {
+                const reviews = snapshot.exists() ? snapshot.val() : [];
+                reviews.push(reviewText);
+
+                set(reviewsRef, reviews)
+                    .then(() => {
+                        alert("Review submitted successfully.");
+                        reviewInput.value = ""; // Clear the input field
+                        fetchReviews(recipeKey); // Refresh reviews
+                    })
+                    .catch((error) => {
+                        console.error("Error submitting review:", error);
+                        alert("Failed to submit the review.");
+                    });
+            }, { onlyOnce: true });
+        }
+
+        function fetchReviews(recipeKey) {
+            const reviewsRef = ref(db, `recipes/${recipeKey}/reviews`);
+            const reviewsContainer = document.getElementById(`reviews-${recipeKey}`);
+
+            onValue(reviewsRef, (snapshot) => {
+                reviewsContainer.innerHTML = ""; // Clear previous reviews
+                snapshot.forEach((childSnapshot) => {
+                    const review = childSnapshot.val();
+                    const reviewItem = document.createElement('p');
+                    reviewItem.textContent = review;
+                    reviewsContainer.appendChild(reviewItem);
+                });
+            });
+        }
+
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('star')) {
+                const rating = event.target.getAttribute('data-value');
+                const recipeKey = event.target.getAttribute('data-recipe-key');
+                updateRating(recipeKey, parseInt(rating));
+            }
         });
-}
-        // Fetch saved recipes
-   // Fetch saved recipes
 
-   
-function fetchSavedRecipes() {
-    const recipesList = document.getElementById('recipes-list');
-    const recipesRef = ref(db, 'recipes');
+        function updateRating(recipeKey, newRating) {
+            const recipeRef = ref(db, `recipes/${recipeKey}/ratings`);
 
-    onValue(recipesRef, (snapshot) => {
-    console.log(snapshot.val());  // Log the snapshot data for debugging
-    recipesList.innerHTML = ""; // Clear existing recipes
-    snapshot.forEach((childSnapshot) => {
-        const recipe = childSnapshot.val();
-        console.log("Recipe:", recipe);  // Log each individual recipe for debugging
-        const recipeItem = document.createElement('div');
-        recipeItem.classList.add('col-md-4');
+            onValue(recipeRef, (snapshot) => {
+                const ratings = snapshot.exists() ? snapshot.val() : [];
+                ratings.push(newRating);
 
-        recipeItem.innerHTML = `
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">${recipe.recipeName || "Unnamed Recipe"}</h5>
-                    <div class="ingredients-box border p-3 bg-light">
-                        <p><strong>Ingredients:</strong></p>
-                        <ul>
-                            <li>${recipe.ingredient1 || "N/A"}</li>
-                            <li>${recipe.ingredient2 || "N/A"}</li>
-                            <li>${recipe.ingredient3 || "N/A"}</li>
-                            <li>${recipe.ingredient4 || "N/A"}</li>
-                            <li>${recipe.ingredient5 || "N/A"}</li>
-                        </ul>
-                    </div>
-                    <p><strong>Preparation:</strong> ${recipe.preparation || "N/A"}</p>
-                </div>
-            </div>
-        `;
-        recipesList.appendChild(recipeItem);
-    });
-});
-}
+                set(recipeRef, ratings)
+                    .then(() => {
+                        alert("Rating updated successfully.");
+                        fetchSavedRecipes();
+                    })
+                    .catch((error) => {
+                        console.error("Error updating rating:", error);
+                        alert("Failed to update the rating.");
+                    });
+            }, { onlyOnce: true });
+        }
 
-
-        // Call the function when the page loads
         document.addEventListener('DOMContentLoaded', fetchSavedRecipes);
+        
     </script>
-    <script src="nav.js"></script>
 </body>
 </html>
+
