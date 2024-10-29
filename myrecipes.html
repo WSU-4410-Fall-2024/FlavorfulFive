@@ -31,15 +31,20 @@
                         <input type="text" id="recipe-name" class="recipe-name" class="form-control" placeholder="Recipe Name" minlength="3" required>
                         <button class="btn btn-primary mt-2" onclick="flipCard()">Next</button>
                     </div>
-                    <div class="card-back" id="card-back">
-                        <h4>Enter Ingredients</h4>
+                    
+                  <!-- Success Message -->
+                  <div id="successMessage" style="display: none; color: green; margin-bottom: 10px;">
+                    You have successfully added your recipe!
+                </div>
 
+                    <div class="card-back" id="card-back">
+                        <h2>Enter Ingredients</h2>
                         <input type="text" id="recp1" class="form-control ingredient" placeholder="Ingredient 1" minlength="3" required>
                         <input type="text" id="recp2" class="form-control ingredient" placeholder="Ingredient 2" minlength="3" required>
                         <input type="text" id="recp3" class="form-control ingredient" placeholder="Ingredient 3" minlength="3" required>
                         <input type="text" id="recp4" class="form-control ingredient" placeholder="Ingredient 4" minlength="3" required>
                         <input type="text" id="recp5" class="form-control ingredient" placeholder="Ingredient 5" minlength="3" required>
-                        <h4>Enter Preparation Instructions</h4>
+                        <h2>Enter Preparation Instructions</h2>
                         <textarea id="preparation" class="form-control" name="preparation" placeholder="Enter preparation steps (min 20 characters)" rows="8" minlength="20" required></textarea>
                         
                         <button class="btn btn-primary mt-3" onclick="confirmSaveRecipe()">Save Recipe</button>
@@ -48,9 +53,7 @@
                 <button class="arrow left" id="left-arrow" onclick="flipCardBack()">←</button>
                 <button class="arrow right" id="right-arrow" onclick="flipCard()">→</button>
             </div>
-            
         </div>
-        
     </div>
 
 
@@ -93,7 +96,7 @@
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';
     import { getDatabase, ref, set, push } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';
 
-    // Your Firebase configuration
+    
     const firebaseConfig = {
         apiKey: "AIzaSyC-2pPQQFE91QhJ1jjoAeOmECFCVdkqDzU",
         authDomain: "flavor-1a23c.firebaseapp.com",
@@ -105,7 +108,7 @@
         measurementId: "G-KB859RPX9N"
     };
 
-    // Initialize Firebase
+    
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
@@ -130,7 +133,7 @@ set(newRecipeRef, {
       });
       const newRecipeRef = push(ref(db, 'recipes'));
   </script>
-  <script src="nav.js"></script>
+
 
 
 </body>
