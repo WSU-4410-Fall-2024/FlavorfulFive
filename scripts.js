@@ -54,6 +54,8 @@ function getBotResponse(userMessage) {
         return "Hi there! How can I help you?";
     } else if (lowerCaseMessage.includes("whats your name")) {
         return "I'm a Recipe Assistant Bot!";
+    } else if (lowerCaseMessage.includes("hi")) {
+        return "Hi there! How can I help you?";
     } else if (lowerCaseMessage.includes("how can I contact support")) {
         return "You can reach us at support@recipe.com.";
     } else if (lowerCaseMessage.includes("chicken")) {
