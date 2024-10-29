@@ -1,7 +1,56 @@
 let isFlipped = false;
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+let recipes = [] //declared an array named recipes that will store all fetched recipes from Firebase
 
+//Defines a function fetchRecipes that will retrieve recipe data from a firebase database
+
+function fetchRecipes() {
+    const recipesRef = ref(db, 'recipes'); //creates a reference to the recipes collection in Firebase database (is firebase database defined as 'db'?)
+    onValue(recipesRef, (snapshot) => { //looks for real-time updates to the recipes data. when there's a change, this will update the recipes array
+        recipes = []; // Clear previous recipes to avoid duplicates
+        snapshot.forEach((childSnapshot) => { //iterates through each recipe in the Firebase database snapshot
+            const recipe = childSnapshot.val(); // retrieved data of each recipe entry as an object and stores it in the recipe variable
+            recipes.push(recipe); // Add each recipe to the array
+        });
+        displayRecipes(recipes); // Calls displayRecipes function and passes the full recipes array to display all recipes on page
+}
+
+// Display recipes on the page
+function displayRecipes(recipesToShow) { // function named displayRecipes that takes an array recipesToShow and displays each recipe 
+    const recipeList = document.getElementById('recipeList'); // selects the HTML element with ID recipeList 
+    recipeList.innerHTML = ''; // Clear existing recipes to avoid duplicates
+    recipesToShow.forEach(recipe => { // loops through each recipe in the recipesToShow array
+        const recipeCard = document.createElement('div'); //creates a new div element to act as a container for a single recipe
+        recipeCard.classList.add('recipe-card'); //adds a CSS Class recipeCard to the div 
+        recipeCard.innerHTML = ` //sets the innerHTML of the recipe card to display recipe's details
+            <h3>${recipe.recipeName}</h3>
+            <p><strong>Ingredients:</strong> ${recipe.ingredient1}, ${recipe.ingredient2}, ${recipe.ingredient3}, ${recipe.ingredient4}, ${recipe.ingredient5}</p>
+            <p><strong>Preparation:</strong> ${recipe.preparation}</p>
+        `; //displays recipe name, list of ingredients, and instructions
+        recipeList.appendChild(recipeCard); // adds the recipeCard to recipeList 
+    });
+}
+
+// Filter recipes based on search input
+function filterRecipes() { // defines a function filterRecipes that filters recipes based on user input in a search box
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase(); //retrieves the text entered in the search input box and converts it to lowercase and stores in searchTerm
+
+    // Filter recipes by name or ingredients
+    const filteredRecipes = recipes.filter(recipe => { //creates a new array filteredRecipes by filtering the recipes array to only include recipes that match the search term
+        const recipeName = recipe.recipeName.toLowerCase(); // converts recipe name to lowercase
+        const ingredients = `${recipe.ingredient1} ${recipe.ingredient2} ${recipe.ingredient3} ${recipe.ingredient4} ${recipe.ingredient5}`.toLowerCase(); //combines all ingredients into a single lowercase string for easier searching
+        return recipeName.includes(searchTerm) || ingredients.includes(searchTerm);
+    }); //checks if the searchTerm is included in either recipe name or ingredients. if it is, adds to filteredRecipes
+
+    displayRecipes(filteredRecipes); //Calls displayRecipes with filteredRecipes to update the displayed recipes based on the search term.
+}
+
+// Event listener for search input
+document.getElementById('searchInput').addEventListener('input', filterRecipes); // Adds an event listener to the search input box. Every time the user types, it calls filterRecipes to filter recipes in real-time.
+
+// Fetch recipes on page load
+window.onload = fetchRecipes; // Calls fetchRecipes when the page loads, populating the page with recipes from Firebase.
 const firebaseConfig = {
     apiKey: "AIzaSyC-2pPQQFE91QhJ1jjoAeOmECFCVdkqDzU",
     authDomain: "flavor-1a23c.firebaseapp.com",
