@@ -11,72 +11,20 @@ const firebaseConfig = {
     messagingSenderId: "185874751125",
     appId: "1:185874751125:web:9c98cfb3aa74062418459c",
     measurementId: "G-KB859RPX9N"
-  };
-
-let recipes = []; // Store all fetched recipes from Firebase
-
-// Fetch recipes from Firebase
-function fetchRecipes() {
-    const recipesRef = ref(db, 'recipes');
-    onValue(recipesRef, (snapshot) => {
-        recipes = []; // Clear previous recipes
-        snapshot.forEach((childSnapshot) => {
-            const recipe = childSnapshot.val();
-            recipes.push(recipe); // Add each recipe to the array
-        });
-        displayRecipes(recipes); // Display all recipes initially
-    });
-}
-
-// Display recipes on the page
-function displayRecipes(recipesToShow) {
-    const recipeList = document.getElementById('recipeList');
-    recipeList.innerHTML = ''; // Clear existing recipes
-
-    recipesToShow.forEach(recipe => {
-        const recipeCard = document.createElement('div');
-        recipeCard.classList.add('recipe-card');
-        recipeCard.innerHTML = `
-            <h3>${recipe.recipeName}</h3>
-            <p><strong>Ingredients:</strong> ${recipe.ingredient1}, ${recipe.ingredient2}, ${recipe.ingredient3}, ${recipe.ingredient4}, ${recipe.ingredient5}</p>
-            <p><strong>Preparation:</strong> ${recipe.preparation}</p>
-        `;
-        recipeList.appendChild(recipeCard);
-    });
-}
-
-// Filter recipes based on search input
-function filterRecipes() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-
-    // Filter recipes by name or ingredients
-    const filteredRecipes = recipes.filter(recipe => {
-        const recipeName = recipe.recipeName.toLowerCase();
-        const ingredients = `${recipe.ingredient1} ${recipe.ingredient2} ${recipe.ingredient3} ${recipe.ingredient4} ${recipe.ingredient5}`.toLowerCase();
-        return recipeName.includes(searchTerm) || ingredients.includes(searchTerm);
-    });
-
-    displayRecipes(filteredRecipes); // Display only the filtered recipes
-}
-
-// Event listener for search input
-document.getElementById('searchInput').addEventListener('input', filterRecipes);
-
-// Fetch recipes on page load
-window.onload = fetchRecipes;
+};
 
 function flipCard() {
     const card = document.getElementById('recipeCard');
     if (!isFlipped) {
         card.classList.add('flipped');
         isFlipped = true;
-        document.getElementById('left-arrow').style.display = 'block'; 
-        document.getElementById('right-arrow').style.display = 'none'; 
+        document.getElementById('left-arrow').style.display = 'block';
+        document.getElementById('right-arrow').style.display = 'none';
     } else {
         card.classList.remove('flipped');
         isFlipped = false;
-        document.getElementById('left-arrow').style.display = 'none'; 
-        document.getElementById('right-arrow').style.display = 'block'; 
+        document.getElementById('left-arrow').style.display = 'none';
+        document.getElementById('right-arrow').style.display = 'block';
     }
 }
 
@@ -84,8 +32,8 @@ function flipCardBack() {
     const card = document.getElementById('recipeCard');
     card.classList.remove('flipped');
     isFlipped = false;
-    document.getElementById('left-arrow').style.display = 'none'; 
-    document.getElementById('right-arrow').style.display = 'block'; 
+    document.getElementById('left-arrow').style.display = 'none';
+    document.getElementById('right-arrow').style.display = 'block';
 }
 
 function confirmSaveRecipe() {
@@ -108,18 +56,15 @@ function confirmSaveRecipe() {
     if (preparationInstructions.length < 20) {
         alert("Preparation instructions must be at least 20 characters long.");
         return;
-}
+    }
 
     if (!allValid) {
         alert("Each ingredient must be at least 3 characters long.");
         return;
     }
 
-    // If validation passes, flip the card to show the back side
-    flipCard();  // This line flips the card to show the ingredients input
-
-    // Now display the modal for user agreement
-    document.getElementById('userAgreementModal').style.display = 'block';
+    flipCard(); // Flip the card to show the ingredients input
+    document.getElementById('userAgreementModal').style.display = 'block'; // Show user agreement modal
 }
 
 function closeModal() {
@@ -127,8 +72,12 @@ function closeModal() {
 }
 
 function saveModal() {
+    const successMessage = document.getElementById('successMessage');
+    successMessage.style.display = 'block';
+    setTimeout(() => {
+        successMessage.style.display = 'none';
+    }, 3000); 
     document.getElementById('userAgreementModal').style.display = 'none';
-    alert("Recipe saved successfully!");
 }
 
 function clearFields() {
@@ -139,27 +88,50 @@ function clearFields() {
     document.getElementById("recp4").value = "";
     document.getElementById("recp5").value = "";
     document.getElementById("preparation").value = "";
+    document.getElementById("review").value = ""; // Clear the review field
+}
+
+function displaySavedRecipe(recipeData) {
+    const recipeContainer = document.getElementById('savedRecipes');
+    const recipeCard = document.createElement('div');
+    recipeCard.className = 'saved-recipe';
+
+    // Update the innerHTML to include the review
+    recipeCard.innerHTML = `
+        <h3>${recipeData.recipeName}</h3>
+        <ul>
+            <li>Ingredient 1: ${recipeData.ingredient1}</li>
+            <li>Ingredient 2: ${recipeData.ingredient2}</li>
+            <li>Ingredient 3: ${recipeData.ingredient3}</li>
+            <li>Ingredient 4: ${recipeData.ingredient4}</li>
+            <li>Ingredient 5: ${recipeData.ingredient5}</li>
+        </ul>
+        <p>Preparation: ${recipeData.preparation}</p>
+        <p>Review: ${recipeData.review || 'No review yet.'}</p> <!-- Added review display -->
+    `;
+
+    recipeContainer.appendChild(recipeCard);
 }
 
 function saveFinalRecipe() {
     const checkbox = document.getElementById('agreement-checkbox');
     if (checkbox.checked) {
         alert("Recipe saved successfully!");
-        
-        // Clear inputs after saving
-    
-        const ingredients = document.querySelectorAll('.ingredient');
-        const newRecipeRef = push(ref(db, 'recipes'));
-        set(newRecipeRef, {
+
+        const recipeData = {
             recipeName: document.getElementById("recipe-name").value.trim(),
             ingredient1: document.getElementById("recp1").value.trim(),
             ingredient2: document.getElementById("recp2").value.trim(),
             ingredient3: document.getElementById("recp3").value.trim(),
             ingredient4: document.getElementById("recp4").value.trim(),
             ingredient5: document.getElementById("recp5").value.trim(),
-            preparation: document.getElementById("preparation").value
- }).then(() => {
-            alert("Recipe saved successfully!");
+            preparation: document.getElementById("preparation").value.trim(),
+            review: document.getElementById("review").value.trim() // Collect the review input
+        };
+
+        const newRecipeRef = push(ref(db, 'recipes'));
+        set(newRecipeRef, recipeData).then(() => {
+            displaySavedRecipe(recipeData); // Display the saved recipe on the page
             clearFields(); // Clear all input fields
             closeModal(); // Close the modal after saving
             flipCardBack(); // Optionally, flip the card back after saving
@@ -170,10 +142,10 @@ function saveFinalRecipe() {
         alert("You must agree to save your recipe.");
     }
 }
-// Close modal when clicking outside of the modal
+
 window.onclick = function(event) {
     const modal = document.getElementById('userAgreementModal');
     if (event.target === modal) {
         closeModal();
     }
-}
+};
