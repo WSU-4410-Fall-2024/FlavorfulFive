@@ -1,6 +1,7 @@
 body {
   background-color: #f8f9fa;
 }
+
 header {
   background-color: #C3ACD0;
   padding: 30px;
@@ -8,10 +9,17 @@ header {
   color: #674188;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+nav {
+  background-color: #F7EFE5;
+  padding: 5px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 nav ul {
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 10px;
   display: flex;
   justify-content: center;
 }
@@ -24,7 +32,7 @@ nav ul li a {
   color: #674188;
   text-decoration: none;
   padding: 10px 25px;
-  background-color: white;
+  background-color: #F7EFE5;
   border-radius: 10px;
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
@@ -33,37 +41,54 @@ nav ul li a:hover {
   background-color: #C3ACD0;
   transform: scale(1.05);
 }
-  
-  .slideshow-container {
-    position: relative;
-    width: 80%;
-    max-width: 800px;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px auto;
-  }
+
+.slideshow-container {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+}
+
 .header-image {
   width: 100%;
   border-radius: 10px;
 }
+
 .recipe {
   text-align: center;
   font-weight: bold;
+  font-size: 1.2em; /* Increase font size */
+  color: #674188; /* Match color scheme */
+  margin-top: 10px;
+  transition: color 0.3s ease; /* Transition for hover effect */
 }
+
+.recipe:hover {
+  color: #C3ACD0; /* Change color on hover */
+}
+
 footer {
+  background-color: #C3ACD0;
   text-align: center;
   margin-top: 20px;
-  padding: 10px 0;
+  padding: 5px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 60px; /* Set a fixed height for the footer */
 }
+
 .image-item img {
   border-radius: 10px;
   transition: transform 0.3s ease-in-out;
 }
+
 .image-item img:hover {
   transform: scale(1.05);
 }
+
 .main-content-image {
   width: 100%;
   border-radius: 10px;
