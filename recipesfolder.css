@@ -8,6 +8,7 @@ body {
   }
   
   header {
+    font-family: 'Playfair Display', serif;
     background-color: #C3ACD0;
     padding: 30px;
     text-align: center;
