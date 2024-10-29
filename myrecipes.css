@@ -1,6 +1,6 @@
 
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Playfair Display', serif;
   background-color: #FFFBF5;
   margin: 0;
   line-height: 1.6;
@@ -8,8 +8,9 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
-
-
+h1{
+  font-family: 'Playfair Display', serif;
+}
 header {
   font-family: 'Playfair Display', serif;
   background-color: #C3ACD0;
@@ -229,5 +230,6 @@ footer {
   nav ul li {
     margin: 0 10px;
   }
+  
 }
 
