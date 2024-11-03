@@ -1,91 +1,40 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #FFFBF5; 
-    color: #674188; 
-    margin: 0;
-    padding: 0;
-  }
-  
-  header {
-    font-family: 'Playfair Display', serif;
-    background-color: #C3ACD0;
-    padding: 1px;
-    text-align: center;
-    color: #674188;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  nav {
-    background-color: #F7EFE5; 
-    padding: 10px 0; 
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-  }
-  nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-  }
-  
-  nav ul li {
-    margin: 0 15px;
-  }
-  
-  nav ul li a {
-    color: #674188;
-    text-decoration: none;
-    padding: 10px 25px;
-    background-color: white;
-    border-radius: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-  }
-  
-  nav ul li a:hover {
-    background-color: #C3ACD0;
-    transform: scale(1.05);
-  }
-  
-  .recipe-img {
-    width: 100%;
-    height: auto;
-    max-width: 200px;
-    border-radius: 10px;
-    border: 2px solid #674188;
-  }
-  
-  .recipe-title {
+.recipe-img {
+    width: 100%; /* Full width of the column */
+    height: 200px; /* Fixed height for uniformity */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border-radius: 8px; /* Optional: adds rounded corners */
+}
+
+
+.recipe-title {
+    font-size: 0.9rem;
     margin-top: 10px;
     font-weight: bold;
-  }
-  
-  footer {
     text-align: center;
-    padding: 20px;
-    background-color: #C3ACD0;
-    color: #FFFBF5;
   }
   
-  @media (max-width: 1200px) {
+
+@media (max-width: 1200px) {
     .recipe-img {
-      max-width: 180px;
+      height: 180px;
     }
   }
   
-  @media (max-width: 992px) {
+@media (max-width: 992px) {
     .recipe-img {
-      max-width: 160px;
+      height: 160px;
     }
   }
   
-  @media (max-width: 768px) {
+ @media (max-width: 768px) {
     .recipe-img {
-      max-width: 140px;
+      height: 140px;
     }
   }
   
-  @media (max-width: 576px) {
+@media (max-width: 576px) {
     .recipe-img {
-      max-width: 120px;
+      height: 120px;
     }
   }
   
