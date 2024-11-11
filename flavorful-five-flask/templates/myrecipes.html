@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Recipes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/header_nav.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/myrecipes.css') }}">
+</head>
+
+<body>
+  <header>
+    <h1>My Recipes</h1>
+    {% if current_user.is_authenticated %}
+    <p>Thanks for dining with Flavorul Five, {{ current_user.username }}!</p>
+      <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+    {% else %}
+      <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+      <a href="{{ url_for('register') }}" class="btn btn-primary">Register</a>
+    {% endif %}
+  </header>
+
+  <nav>
+    <ul class="nav justify-content-center">
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('recipes') }}">Recipes</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('saved') }}">Saved Recipes</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('my_recipes') }}">My Recipes</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('contact_us') }}">Contact Us</a></li>
+    </ul>
+  </nav>
+  
+  <div class="content-wrapper">
+    <div class="container mt-5">
+        <div class="slideshow-container">
+            <div class="note-card" id="note-card">
+                <div class="card" id="recipeCard">
+                    <div class="card-front" id="card-front">
+                        <h2 class="recipe_name">Enter Recipe Name</h2>
+                        <input type="text" id="recipe-name" class="recipe-name" class="form-control" placeholder="Recipe Name" minlength="3" required>
+                        <button class="btn btn-primary mt-2" onclick="flipCard()">Next</button>
+                    </div>
+                    
+                  <div id="successMessage" style="display: none; color: green; margin-bottom: 10px;">
+                    You have successfully added your recipe!
+                </div>
+
+                    <div class="card-back" id="card-back">
+                        <h2>Enter Ingredients</h2>
+                        <input type="text" id="recp1" class="form-control ingredient" placeholder="Ingredient 1" minlength="3" required>
+                        <input type="text" id="recp2" class="form-control ingredient" placeholder="Ingredient 2" minlength="3" required>
+                        <input type="text" id="recp3" class="form-control ingredient" placeholder="Ingredient 3" minlength="3" required>
+                        <input type="text" id="recp4" class="form-control ingredient" placeholder="Ingredient 4" minlength="3" required>
+                        <input type="text" id="recp5" class="form-control ingredient" placeholder="Ingredient 5" minlength="3" required>
+                        <h2>Enter Preparation Instructions</h2>
+                        <textarea id="preparation" class="form-control" name="preparation" placeholder="Enter preparation steps (min 20 characters)" rows="8" minlength="20" required></textarea>
+                        
+                        <button class="btn btn-primary mt-3" onclick="confirmSaveRecipe()">Save Recipe</button>
+                    </div>
+                </div>
+                <button class="arrow left" id="left-arrow" onclick="flipCardBack()">←</button>
+                <button class="arrow right" id="right-arrow" onclick="flipCard()">→</button>
+            </div>
+        </div>
+    </div>
+
+
+
+  <div id="userAgreementModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>User Agreement</h2>
+      <p>Please agree to save your recipe:</p>
+      <div class="agreement-text">
+        <p>The user agreement is an essential component of the SafeZone© program, detailing the conditions of use, data protection protocols, and user obligations. By downloading and using this program, you agree to adhere to the following terms:
+          Data Privacy: Your data will be handled in accordance with applicable data privacy laws. Forestview takes all reasonable steps to ensure data privacy but does not guarantee absolute protection.Although every attempt is taken to safeguard data, users should be advised that the nature of developing cyber threats makes complete security impossible.
+          Application Sharing: You may not share, sell, or redistribute the application or its associated data without the express written consent of Forestview. The program is only intended for personal use; any unlawful distribution will cause the license to be immediately terminated and may lead to legal action.
+          General Legal Clause: Forestview expressly prohibits the selling or distribution of any data handled by this application without their prior written approval. Users violating this clause will be subject to legal penalties as determined by applicable laws.
+          Unilateral Indemnity Clause for Forestview: Forestview assumes no liability for data breaches, zero-day attacks, SQL injections, or any other database worms or security threats. By using the application, you agree to indemnify and hold Forestview harmless from any legal action or damages resulting from such attacks or breaches. Forestview makes no guarantee of absolute security and advises users to implement additional security measures as needed.
+          Periodic Vulnerability Assessments: Forestview commits to periodic vulnerability assessments of its systems to identify and mitigate potential security threats. We also require similar security measures and assessments from all key vendors working with our platform. This continuous procedure guarantees the security and integrity of the data saved and processed inside the SafeZone© application.
+          Statement on Evolving Requirements: As technology and the security landscape continue to evolve, Forestview reserves the right to modify and update security practices and requirements without prior notice. Users will be notified of substantial modifications and may need to revise their systems or protocols to maintain software use.
+          Compliance with Industry Standards: This software is compliant with all relevant industry-specific standards. Forestview ensures that the application meets the strict requirements for handling sensitive data and is regularly audited to maintain compliance with these standards.
+          By accepting these conditions, users recognize their duty to use the program in a secure and compliant way, and they agree to follow all relevant standards.</p>
+     
+      </div>
+      
+    
+      <div class="agreement-checkbox">
+        <label>
+          <input type="checkbox" id="agreement-checkbox"> I agree to the terms and conditions of the user agreement.
+        </label>
+      </div>
+      
+      <div class="modal-buttons">
+        <button id="savebtn" class="btn btn-primary" onclick="saveModal()">Save</button>
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+  <script type="module">
+    // Import the necessary functions from Firebase SDK
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';
+    import { getDatabase, ref, set, push } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';
+
+    
+    const firebaseConfig = {
+        apiKey: "AIzaSyC-2pPQQFE91QhJ1jjoAeOmECFCVdkqDzU",
+        authDomain: "flavor-1a23c.firebaseapp.com",
+        databaseURL: "https://flavor-1a23c-default-rtdb.firebaseio.com",
+        projectId: "flavor-1a23c",
+        storageBucket: "flavor-1a23c.appspot.com",
+        messagingSenderId: "185874751125",
+        appId: "1:185874751125:web:9c98cfb3aa74062418459c",
+        measurementId: "G-KB859RPX9N"
+    };
+
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+      document.addEventListener('DOMContentLoaded', function() {
+          document.getElementById("savebtn").addEventListener('click', function(e) {
+              e.preventDefault();
+set(newRecipeRef, {
+  recipeName: document.getElementById("recipe-name").value.trim(),
+    ingredient1: document.getElementById("recp1").value.trim(),
+    ingredient2: document.getElementById("recp2").value.trim(),
+    ingredient3: document.getElementById("recp3").value.trim(),
+    ingredient4: document.getElementById("recp4").value.trim(),
+    ingredient5: document.getElementById("recp5").value.trim(),
+    preparation: document.getElementById("preparation").value
+})
+
+.catch((error) => {
+  console.error("Error adding recipe: ", error);
+});
+
+          });
+      });
+      const newRecipeRef = push(ref(db, 'recipes'));
+  </script>
+
+
+
+</body>
+</html>
