@@ -1,0 +1,53 @@
+
+.slideshow-container {
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+}
+
+.header-image {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.recipe {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em; /* Increase font size */
+  color: #674188; /* Match color scheme */
+  margin-top: 10px;
+  transition: color 0.3s ease; /* Transition for hover effect */
+}
+
+.recipe:hover {
+  color: #C3ACD0; /* Change color on hover */
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #C3ACD0;
+  color: #FFFBF5;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.image-item img {
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.image-item img:hover {
+  transform: scale(1.05);
+}
+
+.main-content-image {
+  width: 100%;
+  border-radius: 10px;
+}
