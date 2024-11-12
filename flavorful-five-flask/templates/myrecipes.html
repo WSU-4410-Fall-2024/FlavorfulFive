@@ -105,6 +105,9 @@
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js';
     import { getDatabase, ref, set, push } from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js';
 
+    const username = "{{ username | safe }}";
+    console.log("Logged-in user's username:", username); //TEST username variable is passed from backend when logged in
+
     
     const firebaseConfig = {
         apiKey: "AIzaSyC-2pPQQFE91QhJ1jjoAeOmECFCVdkqDzU",
@@ -131,7 +134,8 @@ set(newRecipeRef, {
     ingredient3: document.getElementById("recp3").value.trim(),
     ingredient4: document.getElementById("recp4").value.trim(),
     ingredient5: document.getElementById("recp5").value.trim(),
-    preparation: document.getElementById("preparation").value
+    preparation: document.getElementById("preparation").value,
+    username: username
 })
 
 .catch((error) => {
