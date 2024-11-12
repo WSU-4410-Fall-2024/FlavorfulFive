@@ -116,11 +116,13 @@ def recipes():
 
 @app.route('/saved')
 def saved():
-    return render_template('saved.html')  
+    username = current_user.username if current_user.is_authenticated else "Guest"
+    return render_template('saved.html',username=username)  
 
 @app.route('/myrecipes')
 def my_recipes():
-    return render_template('myrecipes.html')  
+    username = current_user.username if current_user.is_authenticated else "Guest"
+    return render_template('myrecipes.html',username=username)  
 
 @app.route('/contactus')
 def contact_us():
