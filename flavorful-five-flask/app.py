@@ -10,6 +10,8 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 
+
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 
@@ -26,10 +28,20 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
+    '''
+    used to return user, based on the userID
+    '''
     return User.query.get(int(user_id))
 
 
 class User(db.Model, UserMixin):
+    '''
+    structure of user in database for sql-lite
+    id (int): Primary key for the user.
+        username (str): The username of the user.
+        password (str): The hashed password of the user.
+        email (str): The email address of the user. (added using migration)
+    '''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
@@ -37,6 +49,13 @@ class User(db.Model, UserMixin):
 
 
 class RegisterForm(FlaskForm):
+    '''
+    utilize flasks built in forms for authentication
+     username (StringField): Field for the username.
+    password (PasswordField): Field for the password.
+    email (EmailField): Field for the email address.
+    submit (SubmitField): Submit button for the form.
+    '''
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
 
@@ -49,6 +68,9 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Register')
 
     def validate_username(self, username):
+        '''
+        verifies username is unique, or else sends a message
+        '''
         existing_user_username = User.query.filter_by(
             username=username.data).first()
         if existing_user_username:
@@ -56,6 +78,9 @@ class RegisterForm(FlaskForm):
                 'That username already exists. Please choose a different one.')
         
     def validate_email(self, email):
+        '''
+        verifies email is unique, or else sends a message
+        '''
         existing_user_email = User.query.filter_by(email=email.data).first()
         if existing_user_email:
             raise ValidationError(
@@ -63,6 +88,13 @@ class RegisterForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
+    '''
+    A login form for existing users.
+
+        username (StringField): Field for the username.
+        password (PasswordField): Field for the password.
+        submit (SubmitField): Submit button for the form.
+    '''
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
 
@@ -74,11 +106,17 @@ class LoginForm(FlaskForm):
 
 @app.route('/')
 def home():
+    '''
+    syntax for defining a route, in this case home
+    '''
     return render_template('home.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    '''
+    route for login, compares hashed password to database
+    '''
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
