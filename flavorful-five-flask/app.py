@@ -128,6 +128,10 @@ def my_recipes():
 def contact_us():
     return render_template('contactus.html')  
 
+@app.route('/recipesfolder')
+def recipes_folder():
+    return render_template('recipesfolder.html')  
+
 
 
 if __name__ == "__main__":
