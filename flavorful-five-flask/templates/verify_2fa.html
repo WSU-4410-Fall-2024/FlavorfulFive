@@ -1,5 +1,11 @@
 <form method="POST">
-    <label for="2fa_code">Enter the 2FA code sent to your email:</label>
+    <label for="2fa_code">Enter the 2FA code sent to your email: {{current_user.email}}</label>
     <input type="text" name="2fa_code" required>
     <button type="submit">Verify</button>
 </form>
+
+
+<form method="POST" action="{{ url_for('send_2fa_code') }}">
+    <button type="submit">Resend Code</button>
+</form>
+
