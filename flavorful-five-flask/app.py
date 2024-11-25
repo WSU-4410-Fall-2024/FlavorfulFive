@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
@@ -6,13 +6,31 @@ from wtforms import StringField, PasswordField, SubmitField, EmailField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+import os
+import pyotp
+from flask_mail import Mail, Message
+
 
 
 app = Flask(__name__)
 
+#config for sending 2FA email
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'bashirharis21@gmail.com'
+app.config['MAIL_PASSWORD'] = 'jsjj hfbt pqbx hzxd'
+mail = Mail(app)
+key ='JBSWY3DPEHPK3PXP'
 
-
+#FOR RUNNING LOCALLY
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+
+#FOR USE WHEN HOSTING
+# app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database.db')}"
+
+
+
 app.config['SECRET_KEY'] = 'thisisasecretkey'
 
 
@@ -123,7 +141,17 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-                return redirect(url_for('home'))
+
+
+
+
+                # return redirect(url_for('home'))
+                return redirect(url_for('send_2fa_code'))  # Redirect to send the 2FA code
+            
+
+
+
+
     return render_template('login.html', form=form)
 
 
@@ -172,7 +200,46 @@ def recipes_folder():
 
 
 
+@app.route('/verify-2fa', methods=['GET', 'POST'])
+@login_required
+def verify_2fa():
+    if request.method == 'POST':
+        entered_code = request.form.get('2fa_code')
+        if str(session.get('2fa_code')) == entered_code:
+            # 2FA successful
+            session.pop('2fa_code', None)  # Clear the code from the session
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid 2FA code. Please try again.', 'danger')
+    
+    return render_template('verify_2fa.html')
+
+
+
+@app.route('/send-2fa-code', methods=['GET', 'POST'])
+@login_required
+def send_2fa_code():
+    # Generate and send a 2FA code
+    code = pyotp.TOTP(key).now()  # Generate a TOTP code
+    session['2fa_code'] = code
+
+    # Send the 2FA code via email
+    msg = Message('Your 2FA Code', sender=app.config['MAIL_USERNAME'], recipients=[current_user.email])
+    msg.body = f'Your 2FA code is: {code}'
+    mail.send(msg)
+
+    flash('A 2FA code has been sent to your email.', 'info')
+    return redirect(url_for('verify_2fa'))
+
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+
+
+    #FOR RUNNING LOCALLY   
     app.run(debug=True, port=8000)
+
+    #FOR USE WHEN HOSTING
+    #app.run()
