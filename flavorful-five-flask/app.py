@@ -8,19 +8,22 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 import pyotp
 from flask_mail import Mail, Message
+from dotenv import load_dotenv
+import os
+
 
 
 app = Flask(__name__)
-
+load_dotenv()
 #config for sending 2FA email
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'bashirharis21@gmail.com'
-app.config['MAIL_PASSWORD'] = 'jsjj hfbt pqbx hzxd'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')  
 mail = Mail(app)
-key ='JBSWY3DPEHPK3PXP'
-
+key = os.getenv('key') #key for otp
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
 #FOR RUNNING LOCALLY
@@ -30,7 +33,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 
 
-app.config['SECRET_KEY'] = 'thisisasecretkey'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
 db = SQLAlchemy(app)

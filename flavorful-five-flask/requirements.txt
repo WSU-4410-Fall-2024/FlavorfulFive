@@ -25,3 +25,4 @@ zipp==3.8.0
 Flask-Migrate==4.0.7
 pyotp==2.9.0
 Flask-Mail==0.9.1
+python-dotenv==1.0.1
