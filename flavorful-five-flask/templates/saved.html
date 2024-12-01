@@ -11,7 +11,7 @@
 <body>
     <header>
         <h1>Saved Recipes</h1>
-        {% if current_user.is_authenticated %}
+        {%if session.get('2fa_verified')%}
         <p>Thanks for dining with Flavorful Five, {{ current_user.username }}!</p>
           <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
         {% else %}
