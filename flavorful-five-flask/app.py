@@ -12,10 +12,11 @@ from dotenv import load_dotenv
 import os
 
 
-
 app = Flask(__name__)
+
+#loads env variables
 load_dotenv()
-#config for sending 2FA email
+#set up app and email sending parameters
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -31,14 +32,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 #FOR USE WHEN HOSTING
 # app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database.db')}"
 
-
-
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
-
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-
 migrate = Migrate(app, db)
 
 login_manager = LoginManager()
@@ -52,7 +47,6 @@ def load_user(user_id):
     used to return user, based on the userID
     '''
     return User.query.get(int(user_id))
-
 
 class User(db.Model, UserMixin):
     '''
@@ -143,23 +137,17 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
-
-
-
-
                 # return redirect(url_for('home'))
                 return redirect(url_for('send_2fa_code'))  # Redirect to send the 2FA code
-            
-
-
-
-
     return render_template('login.html', form=form)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
+    '''
+    logout route clears logged in and 2fa status
+    '''
     session.pop('2fa_verified', None)
     logout_user()
     return redirect(url_for('home'))
@@ -167,6 +155,9 @@ def logout():
 
 @ app.route('/register', methods=['GET', 'POST'])
 def register():
+    '''
+    route to create new user and add to db
+    '''
     form = RegisterForm()
 
     if form.validate_on_submit():
@@ -206,6 +197,9 @@ def recipes_folder():
 @app.route('/verify-2fa', methods=['GET', 'POST'])
 @login_required
 def verify_2fa():
+    '''
+    check to verify 2fa code
+    '''
     if request.method == 'POST':
         entered_code = request.form.get('2fa_code')
         if str(session.get('2fa_code')) == entered_code:
@@ -223,9 +217,9 @@ def verify_2fa():
 @app.route('/send-2fa-code', methods=['GET', 'POST'])
 @login_required
 def send_2fa_code():
-    # Generate and send a 2FA code
+    # Generate time-sensitive 2FA code
     totp = pyotp.TOTP(key, interval=90)
-    code = pyotp.TOTP(key).now()  # Generate a TOTP code
+    code = pyotp.TOTP(key).now()
     session['2fa_code'] = code
 
     # Send the 2FA code via email
