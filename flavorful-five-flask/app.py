@@ -6,10 +6,8 @@ from wtforms import StringField, PasswordField, SubmitField, EmailField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
-import os
 import pyotp
 from flask_mail import Mail, Message
-
 
 
 app = Flask(__name__)
@@ -23,9 +21,10 @@ app.config['MAIL_PASSWORD'] = 'jsjj hfbt pqbx hzxd'
 mail = Mail(app)
 key ='JBSWY3DPEHPK3PXP'
 
+
+
 #FOR RUNNING LOCALLY
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-
 #FOR USE WHEN HOSTING
 # app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database.db')}"
 
@@ -158,6 +157,7 @@ def login():
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
+    session.pop('2fa_verified', None)
     logout_user()
     return redirect(url_for('home'))
 
@@ -208,6 +208,7 @@ def verify_2fa():
         if str(session.get('2fa_code')) == entered_code:
             # 2FA successful
             session.pop('2fa_code', None)  # Clear the code from the session
+            session['2fa_verified'] = True #add session for 2FA
             return redirect(url_for('home'))
         else:
             flash('Invalid 2FA code. Please try again.', 'danger')
@@ -220,12 +221,62 @@ def verify_2fa():
 @login_required
 def send_2fa_code():
     # Generate and send a 2FA code
+    totp = pyotp.TOTP(key, interval=90)
     code = pyotp.TOTP(key).now()  # Generate a TOTP code
     session['2fa_code'] = code
 
     # Send the 2FA code via email
     msg = Message('Your 2FA Code', sender=app.config['MAIL_USERNAME'], recipients=[current_user.email])
     msg.body = f'Your 2FA code is: {code}'
+    msg.html = f"""
+    <html>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f9f9f9;">
+        <table role="presentation" cellspacing="0" cellpadding="0" style="width: 100%; background-color: #f9f9f9; padding: 20px;">
+            <tr>
+                <td align="center">
+                    <table role="presentation" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%; background-color: #f5daf2; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                        <tr>
+                            <td style="text-align: center;">
+                                <h2 style="color: #333; font-size: 24px; margin: 0;">Your 2FA Code</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 16px; color: #555; line-height: 1.5; margin: 15px 0;">
+                                Hi <strong>{current_user.username}<strong>,
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 16px; color: #555; line-height: 1.5; margin: 15px 0;">
+                                Here is your 2FA code:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center; margin: 20px 0;">
+                                <span style="font-size: 24px; color: #333; font-weight: bold; background-color: #f2f2f2; padding: 10px 20px; border-radius: 5px; display: inline-block;">{code}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 16px; color: #555; line-height: 1.5; margin: 15px 0;">
+                                This code is valid for <strong>90 seconds</strong>. Please do not share this code with anyone.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 16px; color: #555; line-height: 1.5; margin: 15px 0;">
+                                If you did not request this code, please contact our support team immediately.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 14px; color: #aaa; text-align: center; margin-top: 20px;">
+                                &copy; 2024 FlavorfulFive. All rights reserved.
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    """
     mail.send(msg)
 
     flash('A 2FA code has been sent to your email.', 'info')
