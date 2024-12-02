@@ -24,7 +24,7 @@ app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')  
 mail = Mail(app)
 key = os.getenv('key') #key for otp
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-default-secret-key')
 
 
 #FOR RUNNING LOCALLY
@@ -169,10 +169,741 @@ def register():
 
     return render_template('register.html', form=form)
 
+all_recipes = [
+    {
+        "name": "Microwave Baked Potato",
+        "image": "images2/1.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "1 large russet potato",
+            "Salt and ground black pepper",
+            "1 tablespoon butter",
+            "2 tablespoons shredded Cheddar cheese",
+            "1 tablespoon sour cream"
+        ],
+        "instructions": """Scrub potato and prick with a fork. Place on a microwave-safe plate. Microwave on full power for 5 minutes. Turn potato over, and microwave until soft, about 5 more minutes. Remove potato from the microwave, and cut in half lengthwise. Season with salt and pepper and mash up the inside a little with a fork. Add butter and Cheddar cheese. Microwave until melted, about 1 more minute. Top with sour cream, and serve."""
+    },
+    {
+        "name": "Tater Tot Casserole",
+        "image": "images2/2.png",
+        "cuisine": "American",
+        "rating": 4,
+        "ingredients": [
+            "1 pound ground beef",
+            "1 (10.5 ounce) can condensed cream of mushroom soup",
+            "Salt and ground black pepper to taste",
+            "1 (16 ounce) package frozen tater tots",
+            "2 cups shredded Cheddar cheese"
+        ],
+        "instructions": """Preheat the oven to 350°F. Heat a skillet over medium-high heat and cook ground beef until browned and crumbly, about 7 to 10 minutes. Stir in the condensed soup and season with salt and pepper. Transfer the beef mixture to a baking dish, layer tater tots evenly on top, and sprinkle with Cheddar cheese. Bake until tater tots are golden brown and hot, about 30 to 45 minutes."""
+    },
+    {
+        "name": "Pesto Salmon",
+        "image": "images2/3.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "24 ounces salmon fillets (4 6-ounce fillets)",
+            "6-7 tablespoons pesto",
+            "⅓ cup fresh breadcrumbs",
+            "½ cup freshly grated parmesan cheese"
+        ],
+        "instructions": """Preheat the oven to 400°F. Place a piece of tin foil on a rimmed baking sheet and spray with vegetable spray. Lay the salmon fillets on the baking sheet so they don’t touch. Spoon 1½ tablespoons of basil pesto over each fillet and spread it with the back of a spoon or knife so it’s lightly coated with the herb sauce. Combine the breadcrumbs and parmesan cheese in a small bowl. Top the salmon fillets with the breadcrumb mixture. Cook the salmon for 12 minutes for medium and up to 15 minutes to cook through."""
+    },
+    {
+        "name": "Slow Cooker Sausage and Peppers",
+        "image": "images2/4.png",
+        "cuisine": "Italian",
+        "rating": 4,
+        "ingredients": [
+            "5 links Italian Sausage",
+            "2 tablespoons olive oil",
+            "One 24 oz. jar Rao’s Marinara Sauce",
+            "2 large red bell peppers",
+            "1 large green bell pepper"
+        ],
+        "instructions": """Heat half the olive oil in a non-stick frying pan over medium-high heat, add sausages, and cook until they're nicely browned on both sides. Remove sausage to cutting board and cut each sausage in half lengthwise. Heat the rest of the olive oil, add sausage, and brown the cut side of the sausage. Put sausage on cutting board and cut into pieces when it’s cool enough to handle. Put sausage pieces in slow cooker and turn to LOW. Add the pasta sauce to the frying pan and simmer about 10 minutes so sauce is slightly reduced. While sauce reduces, cut red and green peppers into pieces a little bigger than one inch across. Add peppers to slow cooker. When sauce has reduced by about 1/4, pour over sausage and peppers in the slow cooker and stir to combine. Put lid on the slow cooker and cook on LOW about 1 1/2 hours for peppers that are still slightly crisp, or a bit longer if you prefer softer peppers."""
+    },
+    {
+        "name": "Air Fryer French Bread Pizza",
+        "image": "images2/5.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "2 French rolls",
+            "2 tablespoons garlic butter",
+            "½ cup pizza sauce",
+            "1 cup pizza mozzarella",
+            "½ cup pepperoni"
+        ],
+        "instructions": """Preheat air fryer to 350 degrees. Spread garlic butter on split French bread rolls. Add 2 buttered roll halves to the preheated air fryer tray. Cook for 3 minutes. Next, add the pizza sauce to the toasted buns. Top with cheese followed by pepperoni or any of your favorite toppings. Cook for an additional 5 minutes or until desired crispiness is reached. Cook remaining rolls and enjoy hot!"""
+    },
+    {
+        "name": "Mississippi Pot Roast",
+        "image": "images2/6.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "3–4 lb. beef rump roast",
+            "1 packet ranch dressing mix",
+            "1 packet au jus gravy mix",
+            "8–10 pepperoncini peppers",
+            "1/4 cup butter"
+        ],
+        "instructions": """Place the roast in your slow cooker. Sprinkle the ranch dressing mix and au jus mix over the top of the roast. Add pepperoncini peppers on top of and around the roast. Cut the butter into slices and arrange on top of the roast. Add 1/4 cup pickle juice from pepperoncini jar to the bottom of the slow cooker. Cover and cook on low for 6 to 8 hours or until the roast is fork tender."""
+    },
+        {
+        "name": "Mini Chicken Pot Pies",
+        "image": "images2/7.png",
+        "cuisine": "American",
+        "rating": 4,
+        "ingredients": [
+            "1 cup cooked chicken, diced",
+            "1 cup mixed frozen vegetables, thawed",
+            "1/2 cup sharp cheddar cheese, shredded",
+            "1 (10.5 ounce) can of condensed cream of chicken soup",
+            "1 (16.3 ounce) can refrigerated biscuits (8 count)"
+        ],
+        "instructions": """Preheat oven to 375°F. Coat an 8-muffin pan with cooking spray. In a bowl, mix chicken, vegetables, cheese, and soup. Flatten each biscuit into a circle. Press biscuits into muffin cups. Fill with chicken mixture. Bake for 18–23 minutes until crust is golden brown."""
+    },
+    {
+        "name": "5 Ingredient Crock Pot Beef Stroganoff",
+        "image": "images2/8.png",
+        "cuisine": "Russian",
+        "rating": 5,
+        "ingredients": [
+            "1.5 lb sirloin steak, diced",
+            "2 cans cream soup (1 mushroom, 1 onion)",
+            "16 oz mushrooms, sliced",
+            "16 oz egg noodles",
+            "1/2 cup sour cream"
+        ],
+        "instructions": """Brown steak in a skillet. Add steak, soups, and mushrooms to crockpot. Cook on low for 6 hours. Cook egg noodles. Stir in sour cream before serving. Serve over noodles."""
+    },
+    {
+        "name": "Copycat KFC Famous Bowl Recipe",
+        "image": "images2/9.png",
+        "cuisine": "American",
+        "rating": 4,
+        "ingredients": [
+            "20 chicken nuggets or tenders",
+            "12 oz frozen corn",
+            "8 oz bag Idahoan Buttery Homestyle Mashed Potatoes",
+            "18 oz jar Heinz chicken gravy",
+            "2 cups shredded cheddar cheese"
+        ],
+        "instructions": """Prepare chicken, mashed potatoes, and gravy as directed. Layer mashed potatoes, corn, chicken, gravy, and cheese in a bowl. Serve warm."""
+    },
+    {
+        "name": "3-Ingredient Creamy Lemon Chicken",
+        "image": "images2/10.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "4 boneless chicken breasts",
+            "1 cup sour cream",
+            "1 lemon (zested and juiced)"
+        ],
+        "instructions": """Preheat oven to 375°F. Mix sour cream with lemon zest and juice. Coat chicken with mixture and bake for 30–35 minutes. Serve with rice or salad."""
+    },
+    {
+        "name": "Easy Cheesy Tortellini Bake",
+        "image": "images2/11.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "1 lb cheese tortellini",
+            "24 oz jar marinara sauce",
+            "4 oz mozzarella cheese, shredded",
+            "1/4 cup parsley, chopped",
+            "4 oz fresh mozzarella, sliced"
+        ],
+        "instructions": """Preheat oven to 350°F. Cook tortellini for 3 minutes. Mix cooked tortellini, marinara, shredded mozzarella, and parsley. Pour into baking dish. Top with sliced mozzarella. Bake for 30 minutes."""
+    },
+    {
+        "name": "5-Ingredient Pesto Chicken Stuffed Peppers",
+        "image": "images2/12.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "6 bell peppers",
+            "2 chicken breasts, shredded",
+            "1 1/2 cups shredded mozzarella cheese",
+            "1 cup cooked quinoa",
+            "1 (6.25 oz) jar of pesto"
+        ],
+        "instructions": """Preheat oven to 350°F. Broil peppers until blistered. Mix chicken, cheese, quinoa, and pesto. Stuff peppers with mixture. Bake for 10 minutes."""
+    },
+    {
+        "name": "Quick N' Easy Meatballs N' Gravy",
+        "image": "images2/13.png",
+        "cuisine": "American",
+        "rating": 4,
+        "ingredients": [
+            "1 lb ground beef, seasoned",
+            "1 envelope dry onion soup mix",
+            "1 can cream of mushroom soup",
+            "1 ¾ cups water"
+        ],
+        "instructions": """Form ground beef into meatballs and brown in a pan. Remove excess fat. Add onion soup mix, mushroom soup, and water. Simmer until gravy thickens. Serve over rice or noodles."""
+    },
+    {
+        "name": "Penne with Chicken & Broccoli Casserole",
+        "image": "images2/14.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "16 oz penne pasta, cooked",
+            "16 oz jar alfredo sauce",
+            "4 cups shredded cheese",
+            "1 bunch broccoli, cooked",
+            "3-4 chicken breasts, cooked and diced"
+        ],
+        "instructions": """Preheat oven to 350°F. Mix pasta, chicken, broccoli, Alfredo sauce, and half the cheese. Pour into a greased dish. Top with remaining cheese. Bake for 10 minutes or until melted."""
+    },
+    {
+        "name": "Emergency Meatball Sub Dinner",
+        "image": "images2/15.png",
+        "cuisine": "American",
+        "rating": 4,
+        "ingredients": [
+            "6 frozen meatballs",
+            "1/2 cup pasta sauce",
+            "2 tablespoons shredded cheese",
+            "4 submarine rolls"
+        ],
+        "instructions": """Heat meatballs in the microwave. Warm pasta sauce in a pan. Add meatballs to rolls, top with sauce and cheese. Microwave until cheese melts."""
+    },
+    {
+        "name": "Quick Swedish Meatballs",
+        "image": "images2/16.png",
+        "cuisine": "Swedish",
+        "rating": 5,
+        "ingredients": [
+            "24 meatballs",
+            "1 (10 oz) can cream of chicken soup",
+            "1/3 cup milk",
+            "1/8 tsp nutmeg",
+            "1/2 cup sour cream"
+        ],
+        "instructions": """Combine meatballs, soup, milk, and nutmeg in a skillet. Simmer for 15 minutes. Add sour cream and heat for 3 more minutes. Serve warm."""
+    },
+    {
+        "name": "Five Ingredient Caprese Chicken",
+        "image": "images2/17.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "3 chicken breasts",
+            "2 roma tomatoes",
+            "1 cup shredded mozzarella",
+            "1/3 cup balsamic syrup",
+            "1/2 cup basil, shredded"
+        ],
+        "instructions": """Season chicken and cook in a skillet until browned. Drizzle with balsamic syrup, top with mozzarella and tomato slices. Cover and cook until cheese melts. Garnish with basil."""
+    },
+    {
+        "name": "Crock-Pot Chicken with Black Beans & Cream Cheese",
+        "image": "images2/18.png",
+        "cuisine": "Mexican",
+        "rating": 5,
+        "ingredients": [
+            "4-5 chicken breasts",
+            "1 (15 oz) can black beans",
+            "1 (15 oz) can corn",
+            "1 (16 oz) jar salsa",
+            "8 oz cream cheese"
+        ],
+        "instructions": """Place chicken in slow cooker. Add black beans, corn, and salsa. Top with cream cheese. Cook on low for 4 hours. Shred chicken before serving."""
+    },
+    {
+        "name": "Spaghetti Aglio e Olio",
+        "image": "images2/19.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "8 oz spaghetti",
+            "1/2 cup olive oil",
+            "5 garlic cloves, sliced",
+            "1/2 tsp red pepper flakes",
+            "1/4 cup parsley, chopped"
+        ],
+        "instructions": """Cook spaghetti. Heat olive oil in a skillet, add garlic and red pepper flakes. Toss in cooked spaghetti and parsley. Serve warm."""
+    },
+    {
+        "name": "5-Ingredient Peanut Butter Cookies",
+        "image": "images2/20.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "1 cup peanut butter",
+            "1 cup sugar",
+            "1 egg",
+            "1 tsp vanilla extract",
+            "1/2 tsp baking powder"
+        ],
+        "instructions": """Preheat oven to 350°F. Mix ingredients. Shape dough into balls, flatten with a fork. Bake for 10–12 minutes."""
+    },
+    {
+        "name": "Bang Bang Shrimp",
+        "image": "images2/21.png",
+        "cuisine": "Asian-American",
+        "rating": 5,
+        "ingredients": [
+            "1 lb shrimp, shelled and deveined",
+            "1/2 cup mayonnaise",
+            "1/4 cup Thai sweet chili sauce",
+            "3–5 drops hot chili sauce",
+            "1/2–3/4 cup cornstarch"
+        ],
+        "instructions": """Mix mayonnaise, chili sauce, and hot chili sauce. Coat shrimp with cornstarch and deep fry until golden brown. Toss shrimp in sauce and serve."""
+    },
+    {
+        "name": "Crockpot Salsa Chicken",
+        "image": "images2/22.png",
+        "cuisine": "Mexican",
+        "rating": 4,
+        "ingredients": [
+            "4 boneless, skinless chicken breasts",
+            "2 tsp taco seasoning mix",
+            "2 cups chunky red salsa",
+            "Lime wedges (for serving)"
+        ],
+        "instructions": """Place chicken in slow cooker. Sprinkle with taco seasoning and pour salsa over the chicken. Cook on high for 3 hours or low for 6 hours. Shred chicken and mix with additional salsa. Serve with lime wedges."""
+    },
+    {
+        "name": "Black Bean Tacos",
+        "image": "images2/23.png",
+        "cuisine": "Mexican",
+        "rating": 4,
+        "ingredients": [
+            "2 (15 oz) cans black beans, rinsed",
+            "1 tsp ground cumin",
+            "1/2 tsp garlic powder",
+            "8 hard taco shells",
+            "3/4 cup shredded Mexican cheese blend"
+        ],
+        "instructions": """Mash half the beans in a bowl. Mix with whole beans, cumin, and garlic powder. Fill taco shells with the bean mixture and cheese. Bake at 325°F for 12–15 minutes until cheese melts."""
+    },
+    {
+        "name": "Lazy Lasagna",
+        "image": "images2/24.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "1 lb store-bought ravioli (spinach and ricotta recommended)",
+            "750 mL jarred marinara sauce",
+            "3 cups grated mozzarella cheese"
+        ],
+        "instructions": """Preheat oven to 450°F. Layer marinara, ravioli, and cheese in a baking dish. Repeat layers and finish with cheese. Cover with foil and bake for 30 minutes. Uncover and bake until cheese is bubbly and golden."""
+    },
+    {
+        "name": "Sloppy Joes",
+        "image": "images2/25.png",
+        "cuisine": "American",
+        "rating": 4,
+        "ingredients": [
+            "1 lb ground beef",
+            "1 cup ketchup",
+            "1/4 cup yellow mustard",
+            "1/2 cup water (optional)",
+            "Salt & pepper (optional)"
+        ],
+        "instructions": """Brown ground beef in a pot. Drain fat and mix in ketchup, mustard, and water. Simmer until thickened. Serve on hamburger buns."""
+    },
+    {
+        "name": "Lazy Enchiladas",
+        "image": "images2/26.png",
+        "cuisine": "Mexican",
+        "rating": 5,
+        "ingredients": [
+            "22.5 oz box frozen beef & cheese taquitos",
+            "10 oz can enchilada sauce",
+            "4 oz can diced green chilis",
+            "8 oz block Colby jack cheese, shredded",
+            "1 tbsp fresh cilantro, chopped"
+        ],
+        "instructions": """Preheat oven to 425°F. Arrange taquitos in a baking dish. Top with enchilada sauce, green chilis, and shredded cheese. Bake for 20–25 minutes until bubbly. Garnish with cilantro before serving."""
+    },
+    {
+        "name": "Crunchy Peanut Butter Cookies",
+        "image": "images2/27.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "1 cup smooth peanut butter",
+            "1 cup sugar",
+            "1 tsp baking soda",
+            "1 egg"
+        ],
+        "instructions": """Preheat oven to 350°F. Mix all ingredients in a bowl. Shape dough into balls and flatten with a fork. Bake for 10–12 minutes until golden brown."""
+    },
+    {
+        "name": "Classic Chocolate Chip Cookies",
+        "image": "images2/28.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "1 cup unsalted butter, softened",
+            "3/4 cup white sugar",
+            "3/4 cup brown sugar, packed",
+            "1 tsp vanilla extract",
+            "2 eggs",
+            "2 1/4 cups all-purpose flour",
+            "1 tsp baking soda",
+            "1/2 tsp salt",
+            "2 cups semisweet chocolate chips"
+        ],
+        "instructions": """Preheat oven to 375°F. Cream butter, sugars, and vanilla. Add eggs, one at a time. Mix in dry ingredients and fold in chocolate chips. Drop spoonfuls onto baking sheets. Bake for 10–12 minutes until golden."""
+    },
+    {
+        "name": "Easy Vegetable Stir-Fry",
+        "image": "images2/29.png",
+        "cuisine": "Chinese",
+        "rating": 5,
+        "ingredients": [
+            "2 cups broccoli florets",
+            "1 cup sliced carrots",
+            "1 bell pepper, sliced",
+            "1 cup sugar snap peas",
+            "2 tbsp soy sauce",
+            "1 tbsp olive oil",
+            "1 tsp garlic, minced"
+        ],
+        "instructions": """Heat olive oil in a skillet. Add garlic and stir-fry until fragrant. Add broccoli, carrots, and bell pepper, cooking for 5–7 minutes. Add snap peas and soy sauce, cook for 2 more minutes. Serve over rice or noodles."""
+    },
+    {
+        "name": "One-Pot Pasta Primavera",
+        "image": "images2/30.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "8 oz pasta",
+            "2 cups mixed vegetables (bell peppers, zucchini, carrots)",
+            "2 cups vegetable broth",
+            "1/2 cup grated Parmesan cheese",
+            "Salt & pepper to taste"
+        ],
+        "instructions": """Combine pasta, vegetables, and broth in a pot. Boil until pasta is al dente and liquid is absorbed, about 10–12 minutes. Stir in Parmesan cheese and season with salt and pepper."""
+    },
+    {
+        "name": "Quick Chicken Curry",
+        "image": "images2/31.png",
+        "cuisine": "Indian",
+        "rating": 4,
+        "ingredients": [
+            "1 lb chicken breast, diced",
+            "1 can coconut milk",
+            "2 tbsp curry powder",
+            "1 onion, chopped",
+            "2 cloves garlic, minced",
+            "Salt & pepper to taste"
+        ],
+        "instructions": """Sauté onion and garlic. Add chicken and cook until browned. Stir in coconut milk and curry powder. Simmer for 15 minutes. Serve with rice."""
+    },
+    {
+        "name": "White Bean Chicken Chili",
+        "image": "images2/32.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "1 tbsp oil",
+            "1 lb boneless chicken breasts, diced",
+            "1 packet white chicken chili seasoning mix",
+            "1 cup water",
+            "1 can white beans, undrained"
+        ],
+        "instructions": """Heat oil in a skillet. Cook chicken until no longer pink. Add seasoning mix, water, and beans. Simmer for 10 minutes. Serve with toppings of choice."""
+    },
+    {
+        "name": "Avocado Toast",
+        "image": "images2/33.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "1 avocado",
+            "2 slices of bread",
+            "Salt",
+            "Pepper",
+            "Lemon juice"
+        ],
+        "instructions": """Toast bread. Mash avocado with salt, pepper, and lemon juice. Spread avocado mixture on toast."""
+    },
+    {
+        "name": "Banana Pancakes",
+        "image": "images2/34.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "1 banana",
+            "2 eggs",
+            "1/4 tsp baking powder",
+            "Pinch of cinnamon (optional)",
+            "Butter or oil (for cooking)"
+        ],
+        "instructions": """Mash banana in a bowl. Whisk in eggs and baking powder. Cook in a greased skillet until golden on both sides."""
+    },
+    {
+        "name": "Egg Fried Rice",
+        "image": "images2/35.png",
+        "cuisine": "Chinese",
+        "rating": 5,
+        "ingredients": [
+            "2 cups cooked rice",
+            "2 eggs",
+            "1/2 cup peas or vegetables",
+            "Soy sauce",
+            "Oil for frying"
+        ],
+        "instructions": """Scramble eggs in a skillet. Add cooked rice, vegetables, and soy sauce. Stir-fry until heated through. Serve warm."""
+    },
+    {
+        "name": "Guacamole",
+        "image": "images2/36.png",
+        "cuisine": "Mexican",
+        "rating": 5,
+        "ingredients": [
+            "2 avocados",
+            "1 lime (juiced)",
+            "1 small onion (chopped)",
+            "Salt",
+            "Cilantro (optional)"
+        ],
+        "instructions": """Mash avocados in a bowl. Mix in lime juice, onion, and salt. Add cilantro if desired. Serve immediately."""
+    },
+    {
+        "name": "Tomato Soup",
+        "image": "images2/37.png",
+        "cuisine": "American",
+        "rating": 4,
+        "ingredients": [
+            "1 can crushed tomatoes",
+            "1 onion (chopped)",
+            "2 cloves garlic (minced)",
+            "2 cups vegetable broth",
+            "Salt & pepper"
+        ],
+        "instructions": """Sauté onion and garlic in olive oil. Add crushed tomatoes and vegetable broth. Simmer for 20 minutes. Blend until smooth and season with salt and pepper."""
+    },
+    {
+        "name": "Greek Salad",
+        "image": "images2/38.png",
+        "cuisine": "Greek",
+        "rating": 5,
+        "ingredients": [
+            "1 cucumber (chopped)",
+            "2 tomatoes (chopped)",
+            "1/4 red onion (sliced)",
+            "100g feta cheese (crumbled)",
+            "Olive oil"
+        ],
+        "instructions": """Combine cucumber, tomatoes, and onion in a bowl. Add crumbled feta and drizzle with olive oil. Serve chilled."""
+    },
+    {
+        "name": "Bruschetta",
+        "image": "images2/39.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "1 baguette (sliced)",
+            "2 tomatoes (chopped)",
+            "1 clove garlic (minced)",
+            "Olive oil",
+            "Basil (optional)"
+        ],
+        "instructions": """Toast baguette slices until golden. Top with chopped tomatoes, minced garlic, and a drizzle of olive oil. Garnish with basil if desired."""
+    },
+    {
+        "name": "Lentil Soup",
+        "image": "images2/40.png",
+        "cuisine": "Middle Eastern",
+        "rating": 5,
+        "ingredients": [
+            "1 cup lentils",
+            "1 onion (chopped)",
+            "2 carrots (diced)",
+            "4 cups vegetable broth",
+            "1 tsp cumin"
+        ],
+        "instructions": """Sauté onion and carrots in a pot. Add lentils, vegetable broth, and cumin. Simmer for 30 minutes until lentils are tender. Blend partially if desired."""
+    },
+    {
+        "name": "Shrimp Scampi",
+        "image": "images2/41.png",
+        "cuisine": "Italian-American",
+        "rating": 5,
+        "ingredients": [
+            "1 lb shrimp (peeled, deveined)",
+            "4 cloves garlic (minced)",
+            "1/4 cup butter",
+            "1/4 cup white wine",
+            "1 tbsp lemon juice"
+        ],
+        "instructions": """Sauté garlic in butter. Add shrimp and cook until pink. Add white wine and lemon juice. Cook for another 2 minutes and serve."""
+    },
+    {
+        "name": "Stuffed Bell Peppers",
+        "image": "images2/42.png",
+        "cuisine": "Mexican",
+        "rating": 4,
+        "ingredients": [
+            "4 bell peppers (halved)",
+            "1 cup cooked rice",
+            "1 cup ground beef (cooked)",
+            "1 cup cheese (shredded)",
+            "1/2 cup salsa"
+        ],
+        "instructions": """Mix rice, ground beef, salsa, and half the cheese. Stuff bell peppers with the mixture and top with remaining cheese. Bake at 375°F for 30 minutes."""
+    },
+    {
+        "name": "Tzatziki",
+        "image": "images2/43.png",
+        "cuisine": "Greek",
+        "rating": 5,
+        "ingredients": [
+            "1 cup Greek yogurt",
+            "1 cucumber (grated)",
+            "2 cloves garlic (minced)",
+            "1 tbsp olive oil",
+            "1 tbsp lemon juice"
+        ],
+        "instructions": """Combine all ingredients in a bowl. Mix well and chill for 1 hour before serving."""
+    },
+    {
+        "name": "Vegetable Stir-Fry",
+        "image": "images2/44.png",
+        "cuisine": "Chinese",
+        "rating": 5,
+        "ingredients": [
+            "2 cups mixed vegetables (broccoli, bell peppers, carrots)",
+            "2 tbsp soy sauce",
+            "1 tbsp sesame oil",
+            "2 cloves garlic (minced)",
+            "1 tbsp ginger (grated)"
+        ],
+        "instructions": """Sauté garlic and ginger in sesame oil. Add vegetables and soy sauce. Stir-fry until tender and serve warm."""
+    },
+    {
+        "name": "Beef Stroganoff",
+        "image": "images2/45.png",
+        "cuisine": "Russian",
+        "rating": 5,
+        "ingredients": [
+            "1 lb beef sirloin (sliced thinly)",
+            "1 cup mushrooms (sliced)",
+            "1/2 cup sour cream",
+            "1 onion (chopped)",
+            "2 tbsp butter"
+        ],
+        "instructions": """Cook onion and mushrooms in butter. Add beef and cook until browned. Stir in sour cream and simmer for 10 minutes."""
+    },
+    {
+        "name": "Shepherd's Pie",
+        "image": "images2/46.png",
+        "cuisine": "British",
+        "rating": 5,
+        "ingredients": [
+            "1 lb ground beef or lamb",
+            "1 onion (chopped)",
+            "2 cups mashed potatoes",
+            "1 cup mixed vegetables",
+            "1/4 cup beef broth"
+        ],
+        "instructions": """Cook ground meat with onion. Add mixed vegetables and beef broth. Transfer to a baking dish, top with mashed potatoes, and bake at 375°F for 20 minutes."""
+    },
+    {
+        "name": "Quinoa Salad",
+        "image": "images2/47.png",
+        "cuisine": "Mediterranean",
+        "rating": 5,
+        "ingredients": [
+            "1 cup cooked quinoa",
+            "1 cucumber (chopped)",
+            "1 tomato (chopped)",
+            "2 tbsp olive oil",
+            "1 tbsp lemon juice"
+        ],
+        "instructions": """Combine quinoa, cucumber, and tomato in a bowl. Drizzle with olive oil and lemon juice. Mix well and serve chilled."""
+    },
+    {
+        "name": "Greek Chicken Gyros",
+        "image": "images2/48.png",
+        "cuisine": "Greek",
+        "rating": 5,
+        "ingredients": [
+            "2 chicken breasts (sliced)",
+            "1/2 cup Greek yogurt",
+            "1 cucumber (sliced)",
+            "2 pita breads",
+            "1 tbsp lemon juice"
+        ],
+        "instructions": """Cook chicken with lemon juice. Warm pita bread. Spread yogurt on pita, top with chicken and cucumber. Fold and serve."""
+    },
+    {
+        "name": "Sweet Potato Fries",
+        "image": "images2/49.png",
+        "cuisine": "American",
+        "rating": 4,
+        "ingredients": [
+            "2 large sweet potatoes (sliced into fries)",
+            "2 tbsp olive oil",
+            "1 tsp paprika",
+            "Salt & pepper"
+        ],
+        "instructions": """Toss sweet potato slices with olive oil, paprika, salt, and pepper. Bake at 400°F for 25 minutes until crispy."""
+    },
+    {
+        "name": "Thai Green Curry",
+        "image": "images2/50.png",
+        "cuisine": "Thai",
+        "rating": 5,
+        "ingredients": [
+            "1 lb chicken breast (sliced)",
+            "2 tbsp green curry paste",
+            "1 can coconut milk",
+            "1 cup green beans",
+            "1 tbsp fish sauce"
+        ],
+        "instructions": """Sauté curry paste and chicken until browned. Add coconut milk, green beans, and fish sauce. Simmer for 10 minutes. Serve with rice."""
+    }
+]
 
-@app.route('/recipes')
+@app.route('/recipes', methods=['GET'])
 def recipes():
-    return render_template('recipes.html') 
+    query = request.args.get('query', '')
+    cuisine = request.args.get('cuisine', '')
+    rating = request.args.get('rating', '')
+    
+    recipes = all_recipes
+    
+    # Filter recipes based on search criteria
+    if query:
+        recipes = [r for r in recipes if query.lower() in r['name'].lower()]
+    if cuisine:
+        recipes = [r for r in recipes if cuisine.lower() in r.get('cuisine', '').lower()]
+    if rating:
+        recipes = [r for r in recipes if str(r.get('rating', '')) == rating]
+    
+    return render_template('recipes.html', recipes=recipes, query=query, cuisine=cuisine, rating=rating)
+
+@app.route('/recipe_detail/<recipe_name>', methods=['GET'])
+def recipe_detail(recipe_name):
+    # Get the recipe by name using the helper function
+    recipe = get_recipe_by_name(recipe_name, all_recipes)
+    if recipe:
+        return render_template('recipesfolder.html', recipe=recipe)
+    else:
+        flash("Recipe not found.", "danger")
+        return redirect(url_for('recipes'))
+
+def get_recipe_by_name(recipe_name, all_recipes):
+    # Search for the recipe in the list by matching the name
+    for recipe in all_recipes:
+        if recipe['name'].lower() == recipe_name.lower():
+            return recipe
+    return None  # Return None if no recipe is found
+
 
 @app.route('/saved')
 def saved():
@@ -186,13 +917,7 @@ def my_recipes():
 
 @app.route('/contactus')
 def contact_us():
-    return render_template('contactus.html')  
-
-@app.route('/recipesfolder')
-def recipes_folder():
-    return render_template('recipesfolder.html')  
-
-
+    return render_template('contactus.html')   
 
 @app.route('/verify-2fa', methods=['GET', 'POST'])
 @login_required
@@ -211,8 +936,6 @@ def verify_2fa():
             flash('Invalid 2FA code. Please try again.', 'danger')
     
     return render_template('verify_2fa.html')
-
-
 
 @app.route('/send-2fa-code', methods=['GET', 'POST'])
 @login_required
@@ -278,7 +1001,6 @@ def send_2fa_code():
 
     flash('A 2FA code has been sent to your email.', 'info')
     return redirect(url_for('verify_2fa'))
-
 
 
 if __name__ == "__main__":

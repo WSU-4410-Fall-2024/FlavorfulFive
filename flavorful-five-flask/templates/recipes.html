@@ -12,8 +12,8 @@
 <body>
   <header>
     <h1>Recipes</h1>
-    {%if session.get('2fa_verified')%}
-    <p>Thanks for dining with Flavorful Five, {{ current_user.username }}!</p>
+    {% if session.get('2fa_verified') %}
+      <p>Thanks for dining with Flavorful Five, {{ current_user.username }}!</p>
       <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
     {% else %}
       <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
@@ -32,371 +32,80 @@
   </nav>
 
   <div class="content-wrapper">
-    <section class="container mt-5">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-      
-      <div class="col">
-         <!-- LINKS DONT WORK YET! -->
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/1.png') }}" alt="Microwave Baked Potato" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Microwave Baked Potato</p>
-        </a>
-      </div>
- 
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/2.png') }}" alt="Tater Tot Casserole" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Tater Tot Casserole</p>
-        </a>
-      </div>
-  
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/3.png') }}" alt="Pesto Salmon" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Pesto Salmon</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/4.png') }}" alt="Slow Cooker Sausage and Peppers" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Slow Cooker Sausage and Peppers</p>
-        </a>
-      </div>
-    
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/5.png') }}" alt="Air Fryer French Bread Pizza" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Air Fryer French Bread Pizza</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/6.png') }}" alt="Mississippi Pot Roast" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Mississippi Pot Roast</p>
-        </a>
+    <!-- Search and Filters -->
+    <form method="GET" action="{{ url_for('recipes') }}">
+      <div class="input-group mt-4">
+        <input type="text" name="query" id="searchInput" class="form-control" placeholder="Search for recipes...">
+        <button id="searchButton" class="btn btn-primary" type="submit">Search</button>
       </div>
 
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/7.png') }}" alt="Mini Chicken Pot Pies" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Mini Chicken Pot Pies</p>
-        </a>
+      <div class="filters mt-2">
+        <select name="cuisine" id="cuisineFilter" class="form-select">
+          <option value="">Select Cuisine</option>
+          <option value="American">American</option>
+          <option value="Italian">Italian</option>
+          <option value="Mexican">Mexican</option>
+          <option value="Asian">Asian</option>
+          <option value="Soup and Salad">Soup and Salad</option>
+          <option value="Baked Goods/Desserts">Baked Goods/Desserts</option>
+        </select>
       </div>
 
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/8.png') }}" alt="5 Ingredient Crock Pot Beef Stroganoff" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">5 Ingredient Crock Pot Beef Stroganoff</p>
-        </a>
+      <div class="rating-filter mt-3">
+        <button class="btn btn-outline-primary" type="submit" name="rating" value="1">1 Star</button>
+        <button class="btn btn-outline-primary" type="submit" name="rating" value="2">2 Stars</button>
+        <button class="btn btn-outline-primary" type="submit" name="rating" value="3">3 Stars</button>
+        <button class="btn btn-outline-primary" type="submit" name="rating" value="4">4 Stars</button>
+        <button class="btn btn-outline-primary" type="submit" name="rating" value="5">5 Stars</button>
+        <a href="{{ url_for('recipes') }}" class="btn btn-outline-secondary">Show All</a>
       </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/9.png') }}" alt="Copycat KFC Famous Bowl Recipe" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Copycat KFC Famous Bowl Recipe</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/10.png') }}" alt="5 Ingredient Mac and Cheese" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">5 Ingredient Mac and Cheese</p>
-        </a>
-      </div>
+    </form>
 
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/11.png') }}" alt="Easy Cheesy Tortellini Bake" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Easy Cheesy Tortellini Bake</p>
-        </a>
-      </div>
-    
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/12.png') }}" alt="5-Ingredient Pesto Chicken Stuffed Peppers" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">5-Ingredient Pesto Chicken Stuffed Peppers</p>
-        </a>
-      </div>
-   
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/13.png') }}" alt="Quick N' Easy Meatballs N' Gravy" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Quick N' Easy Meatballs N' Gravy</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/14.png') }}" alt="Penne with Chicken & Broccoli Casserole" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Penne with Chicken & Broccoli Casserole</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/15.png') }}" alt="Emergency Meatball Sub Dinner" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Emergency Meatball Sub Dinner</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/16.png') }}" alt="Quick Swedish Meatballs" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Quick Swedish Meatballs</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/17.png') }}" alt="Five Ingredient Caprese Chicken" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Five Ingredient Caprese Chicken</p>
-        </a>
-      </div>
-    
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/18.png') }}" alt="Crock-Pot Chicken with Black Beans & Cream Cheese" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Crock-Pot Chicken with Black Beans & Cream Cheese</p>
-        </a>
-      </div>
-     
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/19.png') }}" alt="Bacon-Wrapped Jalapeño Poppers" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Bacon-Wrapped Jalapeño Poppers</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/20.png') }}" alt="Baked Pesto Chicken" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Baked Pesto Chicken</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/21.png') }}" alt="Bang Bang Shrimp" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Bang Bang Shrimp</p>
-        </a>
-      </div>
- 
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/22.png') }}" alt="Crockpot Salsa Chicken" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Crockpot Salsa Chicken</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/23.png') }}" alt="Black Bean Tacos" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Black Bean Tacos</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/24.png') }}" alt="Lazy Lasagna" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Lazy Lasagna</p>
-        </a>
-      </div>
-    
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/25.png') }}" alt="Sloppy Joes" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Sloppy Joes</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/26.png') }}" alt="Lazy Enchiladas" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Lazy Enchiladas</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/27.png') }}" alt="Crunchy Peanut Butter Cookies" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Crunchy Peanut Butter Cookies</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/28.png') }}" alt="Lemon-Ricotta Pasta" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Lemon-Ricotta Pasta</p>
-        </a>
-      </div>
- 
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/29.png') }}" alt="Bourbon Chicken" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Bourbon Chicken</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-         <img src="{{ url_for('static', filename='images2/30.png') }}" alt="Herb Roasted Chicken" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Herb Roasted Chicken</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/31.png') }}" alt="Easy Pork Tacos" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Easy Pork Tacos</p>
-        </a>
-      </div>
- 
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/32.png') }}" alt="White Bean Chicken Chili" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">White Bean Chicken Chili</p>
-        </a>
-      </div>
-
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/33.png') }}" alt="Avocado Toast" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Avocado Toast</p>
-        </a>
-      </div>
-   
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/34.png') }}" alt="Banana Pancakes" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Banana Pancakes</p>
-        </a>
-      </div>
-    
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/35.png') }}" alt="Egg Fried Rice" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Egg Fried Rice</p>
-        </a>
-      </div>
-    
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/36.png') }}" alt="Guacamole" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Guacamole</p>
-        </a>
-      </div>
-  
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/37.png') }}" alt="Tomato Soup" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Tomato Soup</p>
-        </a>
-      </div>
-  
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/38.png') }}" alt="Greek Salad" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Greek Salad</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/39.png') }}" alt="Bruschetta" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Bruschetta</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/40.png') }}" alt="Lentil Soup" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Lentil Soup</p>
-        </a>
-      </div>
-     
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/41.png') }}" alt="Shrimp Scampi" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Shrimp Scampi</p>
-        </a>
-      </div>
- 
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/42.png') }}" alt="Stuffed Bell Peppers" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Stuffed Bell Peppers</p>
-        </a>
-      </div>
-   
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/43.png') }}" alt="Tzatziki" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Tzatziki</p>
-        </a>
-      </div>
-  
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/44.png') }}" alt="Vegetable Stir Fry" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Vegetable Stir Fry</p>
-        </a>
-      </div>
-   
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/45.png') }}" alt="Seafood Paella" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Seafood Paella</p>
-        </a>
-      </div>
-      
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/46.png') }}" alt="Shepherd's Pie" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Shepherd's Pie</p>
-        </a>
-      </div>
-  
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/47.png') }}" alt="Quinoa Salad" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Quinoa Salad</p>
-        </a>
-      </div>
-    
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/48.png') }}" alt="Greek Chicken Gyros" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Greek Chicken Gyros</p>
-        </a>
-      </div>
-     
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/49.png') }}" alt="Sweet Potato Fries" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Sweet Potato Fries</p>
-        </a>
-      </div>
-   
-      <div class="col">
-        <a href="{{ url_for('recipes_folder') }}">
-          <img src="{{ url_for('static', filename='images2/50.png') }}" alt="Thai Green Curry" class="recipe-img img-fluid">
-          <p class="text-center recipe-title">Thai Green Curry</p>
-        </a>
-      </div>
+    <div class="filter-response mt-3">
+      <h4>
+        {% if query or cuisine or rating %}
+          Recipes
+          {% if query %} with keyword "{{ query }}" {% endif %}
+          {% if cuisine %}
+            {% if query %} and {% endif %}
+            cuisine "{{ cuisine }}"
+          {% endif %}
+          {% if rating %}
+            {% if query or cuisine %} and {% endif %}
+            rating "{{ rating }} stars"
+          {% endif %}
+        {% else %}
+          All Recipes
+        {% endif %}
+      </h4>
     </div>
-  </section>
-  </div>
 
+   <!-- Displaying the list of recipes as before -->
+<div class="container mt-4">
+  <div class="row recipe-container">
+    {% if recipes %}
+      {% for recipe in recipes %}
+        <div class="col-md-4">
+          <div class="recipe-card">
+            <a href="{{ url_for('recipe_detail', recipe_name=recipe.name) }}">
+              <img src="{{ url_for('static', filename=recipe.image) }}" alt="{{ recipe.name }}" class="recipe-img">
+              <h5 class="recipe-title">{{ recipe.name }}</h5>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="col-12">
+        <p class="no-recipes-message">No recipes found. Try adjusting your search or filters.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
 
   <footer>
     <p>&copy; 2024 Flavorful Five</p>
   </footer>
 
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
-

@@ -36,48 +36,61 @@
     <li class="nav-item"><a class="nav-link" href="{{ url_for('contact_us') }}">Contact Us</a></li>
   </ul>
 </nav>
+
 <div class="content-wrapper">
 
-    <img src="{{ url_for('static', filename='images/Flavorfulfive.jpg') }}" alt="Flavorful Five Header" class="header-image img-fluid mt-4">
+  <img src="{{ url_for('static', filename='images/Flavorfulfive.jpg') }}" alt="Flavorful Five Header" class="header-image img-fluid mt-4">
 
-    <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
-      <div class="col">
-        <div class="image-item">
-            <img src="{{ url_for('static', filename='images2/1.png') }}" alt="American" class="img-fluid">
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
+    <div class="col">
+      <div class="image-item">
+        <a href="{{ url_for('recipes', cuisine='American') }}">
+          <img src="{{ url_for('static', filename='images2/1.png') }}" alt="American" class="img-fluid">
           <p class="recipe mt-2">American</p>
-        </div>
-      </div>
-      <div class="col">
-        <div class="image-item">
-            <img src="{{ url_for('static', filename='images2/17.png') }}" alt="Italin" class="img-fluid">
-          <p class="recipe mt-2">Italian</p>
-        </div>
-      </div>
-      <div class="col">
-        <div class="image-item">
-            <img src="{{ url_for('static', filename='images2/23.png') }}" alt="Mexican" class="img-fluid">
-          <p class="recipe mt-2">Mexican</p>
-        </div>
-      </div>
-      <div class="col">
-        <div class="image-item">
-            <img src="{{ url_for('static', filename='images2/50.png') }}" alt="Asian" class="img-fluid">
-          <p class="recipe mt-2">Asian</p>
-        </div>
-      </div>
-      <div class="col">
-        <div class="image-item">
-            <img src="{{ url_for('static', filename='images2/7.png') }}" alt="Soup/Salad" class="img-fluid">
-          <p class="recipe mt-2">Soup and Salad</p>
-        </div>
-      </div>
-      <div class="col">
-        <div class="image-item">
-            <img src="{{ url_for('static', filename='images2/27.png') }}" alt="Dessert" class="img-fluid">
-          <p class="recipe mt-2">Baked Goods/Desserts</p>
-        </div>
+        </a>
       </div>
     </div>
+    <div class="col">
+      <div class="image-item">
+        <a href="{{ url_for('recipes', cuisine='Italian') }}">
+          <img src="{{ url_for('static', filename='images2/17.png') }}" alt="Italian" class="img-fluid">
+          <p class="recipe mt-2">Italian</p>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="image-item">
+        <a href="{{ url_for('recipes', cuisine='Mexican') }}">
+          <img src="{{ url_for('static', filename='images2/23.png') }}" alt="Mexican" class="img-fluid">
+          <p class="recipe mt-2">Mexican</p>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="image-item">
+        <a href="{{ url_for('recipes', cuisine='Asian') }}">
+          <img src="{{ url_for('static', filename='images2/50.png') }}" alt="Asian" class="img-fluid">
+          <p class="recipe mt-2">Asian</p>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="image-item">
+        <a href="{{ url_for('recipes', cuisine='Soup and Salad') }}">
+          <img src="{{ url_for('static', filename='images2/7.png') }}" alt="Soup/Salad" class="img-fluid">
+          <p class="recipe mt-2">Soup and Salad</p>
+        </a>
+      </div>
+    </div>
+    <div class="col">
+      <div class="image-item">
+        <a href="{{ url_for('recipes', cuisine='Baked Goods/Desserts') }}">
+          <img src="{{ url_for('static', filename='images2/27.png') }}" alt="Dessert" class="img-fluid">
+          <p class="recipe mt-2">Baked Goods/Desserts</p>
+        </a>
+      </div>
+    </div>
+  </div>
 
     <img src="{{ url_for('static', filename='images/quote.jpg') }}" alt="Inspiration Quote" class="main-content-image img-fluid mt-4">
 

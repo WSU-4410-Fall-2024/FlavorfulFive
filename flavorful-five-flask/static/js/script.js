@@ -87,20 +87,17 @@ function handleSearch() {
 document.getElementById('searchInput').addEventListener('input', filterRecipes);
 document.getElementById('searchButton').addEventListener('click', filterRecipes); // Trigger search on button click
 
-function flipCard() {
-    const card = document.getElementById('recipeCard');
-    if (!isFlipped) {
+function flipCard(cardId) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+
+    if (!card.classList.contains('flipped')) {
         card.classList.add('flipped');
-        isFlipped = true;
-        document.getElementById('left-arrow').style.display = 'block'; 
-        document.getElementById('right-arrow').style.display = 'none'; 
     } else {
         card.classList.remove('flipped');
-        isFlipped = false;
-        document.getElementById('left-arrow').style.display = 'none'; 
-        document.getElementById('right-arrow').style.display = 'block'; 
     }
 }
+
 
 function flipCardBack() {
     const card = document.getElementById('recipeCard');
