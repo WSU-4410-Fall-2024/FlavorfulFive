@@ -214,7 +214,7 @@ all_recipes = [
     {
         "name": "Slow Cooker Sausage and Peppers",
         "image": "images2/4.png",
-        "cuisine": "Italian",
+        "cuisine": "American",
         "rating": 4,
         "ingredients": [
             "5 links Italian Sausage",
@@ -270,7 +270,7 @@ all_recipes = [
     {
         "name": "5 Ingredient Crock Pot Beef Stroganoff",
         "image": "images2/8.png",
-        "cuisine": "Russian",
+        "cuisine": "Italian",
         "rating": 5,
         "ingredients": [
             "1.5 lb sirloin steak, diced",
@@ -296,16 +296,18 @@ all_recipes = [
         "instructions": """Prepare chicken, mashed potatoes, and gravy as directed. Layer mashed potatoes, corn, chicken, gravy, and cheese in a bowl. Serve warm."""
     },
     {
-        "name": "3-Ingredient Creamy Lemon Chicken",
+        "name": "5-Ingredient Mac and Cheese",
         "image": "images2/10.png",
         "cuisine": "American",
         "rating": 5,
         "ingredients": [
-            "4 boneless chicken breasts",
-            "1 cup sour cream",
-            "1 lemon (zested and juiced)"
+            "4 cups water",
+            "1/2 lb elbow macaroni",
+            "2 jars Olde English Cheese Spread or 8-10 oz cheddar cheese spread like you would put on crackers",
+            "8 oz Velveeta (sliced)",
+            "4 tbsp butter (sliced)"
         ],
-        "instructions": """Preheat oven to 375°F. Mix sour cream with lemon zest and juice. Coat chicken with mixture and bake for 30–35 minutes. Serve with rice or salad."""
+        "instructions": """Bring water to boil in large pot with the lid on When water is boiling, add macaroni and cook pasta until half done – about 4-5 minutes – DO NOT DRAIN. Lower to medium heat, stir in Velveeta and Old English cheeses.When cheese is almost melted, add butter and stir.Add a pinch of salt & pepper to taste.Turn off heat and let rest. Sauce will thicken up after it stands for 15 minutes – or is even better the next day!"""
     },
     {
         "name": "Easy Cheesy Tortellini Bake",
@@ -378,7 +380,7 @@ all_recipes = [
     {
         "name": "Quick Swedish Meatballs",
         "image": "images2/16.png",
-        "cuisine": "Swedish",
+        "cuisine": "American",
         "rating": 5,
         "ingredients": [
             "24 meatballs",
@@ -406,7 +408,7 @@ all_recipes = [
     {
         "name": "Crock-Pot Chicken with Black Beans & Cream Cheese",
         "image": "images2/18.png",
-        "cuisine": "Mexican",
+        "cuisine": "American",
         "rating": 5,
         "ingredients": [
             "4-5 chicken breasts",
@@ -418,37 +420,50 @@ all_recipes = [
         "instructions": """Place chicken in slow cooker. Add black beans, corn, and salsa. Top with cream cheese. Cook on low for 4 hours. Shred chicken before serving."""
     },
     {
-        "name": "Spaghetti Aglio e Olio",
+        "name": "Bacon-Wrapped Jalapeno Poppers",
         "image": "images2/19.png",
-        "cuisine": "Italian",
-        "rating": 5,
-        "ingredients": [
-            "8 oz spaghetti",
-            "1/2 cup olive oil",
-            "5 garlic cloves, sliced",
-            "1/2 tsp red pepper flakes",
-            "1/4 cup parsley, chopped"
-        ],
-        "instructions": """Cook spaghetti. Heat olive oil in a skillet, add garlic and red pepper flakes. Toss in cooked spaghetti and parsley. Serve warm."""
-    },
-    {
-        "name": "5-Ingredient Peanut Butter Cookies",
-        "image": "images2/20.png",
         "cuisine": "American",
         "rating": 5,
         "ingredients": [
-            "1 cup peanut butter",
-            "1 cup sugar",
-            "1 egg",
-            "1 tsp vanilla extract",
-            "1/2 tsp baking powder"
+           "25 fresh jalapeño peppers",
+           "14-16 ounces cream cheese",
+           "2 cups shredded cheddar cheese",
+           "2 (16 ounce) packages bacon"
         ],
-        "instructions": """Preheat oven to 350°F. Mix ingredients. Shape dough into balls, flatten with a fork. Bake for 10–12 minutes."""
+        "instructions": """Cut stems off of peppers and cut them all in half lengthwise.
+Remove seeds from peppers.
+Fill each pepper with cream cheese and sprinkle cheddar cheese on top.
+Wrap 1/2 slice of bacon around each pepper half.
+Place on baking sheets and place in a 450-degree oven for 10 to 15 minutes or until bacon is fully cooked.
+Remove and serve when cooled.
+Enjoy!
+"""
+    },
+    {
+        "name": "Baked Pesto Chicken",
+        "image": "images2/20.png",
+        "cuisine": "Italian",
+        "rating": 5,
+        "ingredients": [
+            "4 boneless skinless chicken breast halves",
+            "1/2 cup refrigerated basil pesto",
+            "2-3 plum tomatoes (sliced, optional)"
+            "1/2 cup mozzarella cheese (shredded)"
+
+        ],
+        "instructions": """Preheat oven to 400 degrees F.
+Line baking sheet with heavy-duty foil.
+Place chicken and pesto in medium bowl; toss to coat.
+Place chicken on prepared baking sheet.
+Bake for 20-25 minutes or until chicken is no longer pink in the center.
+Remove from oven; top with tomatoes and cheese.
+Bake for an additional 3-5 minutes or until cheese is melted.
+"""
     },
     {
         "name": "Bang Bang Shrimp",
         "image": "images2/21.png",
-        "cuisine": "Asian-American",
+        "cuisine": "Asian",
         "rating": 5,
         "ingredients": [
             "1 lb shrimp, shelled and deveined",
@@ -502,105 +517,118 @@ all_recipes = [
         "name": "Sloppy Joes",
         "image": "images2/25.png",
         "cuisine": "American",
-        "rating": 4,
+        "rating": 5,
         "ingredients": [
-            "1 lb ground beef",
-            "1 cup ketchup",
-            "1/4 cup yellow mustard",
-            "1/2 cup water (optional)",
-            "Salt & pepper (optional)"
+          "1 pound ground beef",
+          "1 cup ketchup",
+          "¼ cup yellow mustard",
+          "½ cup water optional - for a saucier sloppy joe",
+          "salt & pepper optional - to taste"
         ],
-        "instructions": """Brown ground beef in a pot. Drain fat and mix in ketchup, mustard, and water. Simmer until thickened. Serve on hamburger buns."""
+        "instructions": """In a medium pot, add the ground beef & cover with 1-2 inches of water. Use a wooden spoon or spatula to break the meat apart.
+Turn the stove to medium-high heat to bring the meat and water to a boil.
+Once it is boiling, turn it down to low so it will simmer. Let the meat cook until all the pieces are brown, about 3 minutes.
+Drain the meat in a colander with fine openings. Return the meat to the pot.
+Add in 1 cup of ketchup and ¼ a cup of yellow mustard. Keep the heat on low and let it heat through for 5 minutes. Stir occasionally.
+Taste test the meat. Add optional salt & pepper to taste. I find the ketchup and mustard add enough salt and flavor that it is not needed.
+Spoon over toasted hamburger buns or rolls to serve. Top with any of the suggested ideas shared above. Enjoy.
+"""
     },
     {
         "name": "Lazy Enchiladas",
         "image": "images2/26.png",
-        "cuisine": "Mexican",
+        "cuisine": "Mexican, American",
         "rating": 5,
         "ingredients": [
-            "22.5 oz box frozen beef & cheese taquitos",
-            "10 oz can enchilada sauce",
-            "4 oz can diced green chilis",
-            "8 oz block Colby jack cheese, shredded",
-            "1 tbsp fresh cilantro, chopped"
+            "22.5 ounces box frozen beef & cheese taquitos",
+            "10 ounces can of enchilada sauce",
+            "4 ounces can of mild diced green chilis",
+            "8 ounces block of Colby jack cheese shredded",
+            "1 tablespoon fresh cilantro chopped"
         ],
-        "instructions": """Preheat oven to 425°F. Arrange taquitos in a baking dish. Top with enchilada sauce, green chilis, and shredded cheese. Bake for 20–25 minutes until bubbly. Garnish with cilantro before serving."""
+        "instructions": """Preheat the oven to 425°F. Spray a 9x13 glass baking dish with cooking spray.
+Place the frozen beef & cheese taquitos into the baking dish in a single layer.
+Pour the enchilada sauce over the entire surface of the taquitos, followed by the diced green chilis.
+Top the entire dish of lazy enchiladas with the shredded cheese and bake for 20-25 minutes or until the cheese is melted and bubbly.
+Allow the lazy enchiladas to rest for 5 minutes, then garnish with the chopped fresh cilantro before serving.
+"""
     },
     {
         "name": "Crunchy Peanut Butter Cookies",
         "image": "images2/27.png",
-        "cuisine": "American",
+        "cuisine": "Baked Goods/Desserts",
         "rating": 5,
         "ingredients": [
-            "1 cup smooth peanut butter",
-            "1 cup sugar",
-            "1 tsp baking soda",
-            "1 egg"
+           "1 cup smooth peanut butter",
+           "1 cup sugar",
+           "1 teaspoon baking soda",
+           "1 extra-large egg (lightly beaten)"
         ],
-        "instructions": """Preheat oven to 350°F. Mix all ingredients in a bowl. Shape dough into balls and flatten with a fork. Bake for 10–12 minutes until golden brown."""
+        "instructions": """reheat the oven to 350° and position 2 racks in the upper and lower thirds. In a medium bowl, mix the peanut butter with the sugar, baking soda and egg. Roll tablespoons of the dough into 24 balls. Set the balls on 2 baking sheets, and using a fork, make a crosshatch pattern on each cookie. Bake for 15 minutes, shifting the baking sheets from front to back and bottom to top, until the cookies are lightly browned and set. Let cool on a wire rack."""
     },
     {
-        "name": "Classic Chocolate Chip Cookies",
+        "name": "Lemon-Ricotta Pasta",
         "image": "images2/28.png",
-        "cuisine": "American",
-        "rating": 5,
-        "ingredients": [
-            "1 cup unsalted butter, softened",
-            "3/4 cup white sugar",
-            "3/4 cup brown sugar, packed",
-            "1 tsp vanilla extract",
-            "2 eggs",
-            "2 1/4 cups all-purpose flour",
-            "1 tsp baking soda",
-            "1/2 tsp salt",
-            "2 cups semisweet chocolate chips"
-        ],
-        "instructions": """Preheat oven to 375°F. Cream butter, sugars, and vanilla. Add eggs, one at a time. Mix in dry ingredients and fold in chocolate chips. Drop spoonfuls onto baking sheets. Bake for 10–12 minutes until golden."""
-    },
-    {
-        "name": "Easy Vegetable Stir-Fry",
-        "image": "images2/29.png",
-        "cuisine": "Chinese",
-        "rating": 5,
-        "ingredients": [
-            "2 cups broccoli florets",
-            "1 cup sliced carrots",
-            "1 bell pepper, sliced",
-            "1 cup sugar snap peas",
-            "2 tbsp soy sauce",
-            "1 tbsp olive oil",
-            "1 tsp garlic, minced"
-        ],
-        "instructions": """Heat olive oil in a skillet. Add garlic and stir-fry until fragrant. Add broccoli, carrots, and bell pepper, cooking for 5–7 minutes. Add snap peas and soy sauce, cook for 2 more minutes. Serve over rice or noodles."""
-    },
-    {
-        "name": "One-Pot Pasta Primavera",
-        "image": "images2/30.png",
         "cuisine": "Italian",
         "rating": 5,
         "ingredients": [
-            "8 oz pasta",
-            "2 cups mixed vegetables (bell peppers, zucchini, carrots)",
-            "2 cups vegetable broth",
-            "1/2 cup grated Parmesan cheese",
-            "Salt & pepper to taste"
+            "1 pound cellentani, gemelli, or another short pasta",
+            "1 cup (8 ounces) whole-milk ricotta, room temperature",
+            "1 cup (2 ounces) freshly grated Parmesan, plus more for serving",
+            "Freshly grated zest of 1 lemon, plus 1 tablespoon lemon juice",
+            "1/2 teaspoon black pepper"
         ],
-        "instructions": """Combine pasta, vegetables, and broth in a pot. Boil until pasta is al dente and liquid is absorbed, about 10–12 minutes. Stir in Parmesan cheese and season with salt and pepper."""
+        "instructions": """Step 1: Bring a large pot of salted water to a boil over high heat. Add the pasta and cook according to package instructions until al dente. Reserve 1 cup pasta cooking water, then drain the pasta and return it to the pot.
+Step 2: Add the ricotta, Parmesan, lemon zest, juice, and black pepper to a blender or food processor. Blend to a smooth paste, scraping down sides of bowl as needed, about 1 minute. With the machine running, slowly add 1/3 cup pasta water. Scrape down the sides of the bowl and check the consistency of the sauce, adding more pasta water to thin it out if you prefer. Pour the sauce over the pasta and stir until the pasta is evenly coated with the sauce. Add more pasta water as needed for a smooth sauce.
+Step 3: Divide the pasta among bowls, being sure to top it with any sauce from the bottom of the pot.
+"""
     },
     {
-        "name": "Quick Chicken Curry",
-        "image": "images2/31.png",
-        "cuisine": "Indian",
+        "name": "Bourbon Chicken",
+        "image": "images2/29.png",
+        "cuisine": "American",
         "rating": 4,
         "ingredients": [
-            "1 lb chicken breast, diced",
-            "1 can coconut milk",
-            "2 tbsp curry powder",
-            "1 onion, chopped",
-            "2 cloves garlic, minced",
-            "Salt & pepper to taste"
+            "1 package McCormick® Bourbon Chicken Skillet Sauce",
+            "1 tablespoon vegetable oil",
+            "1 1/2 pounds boneless skinless chicken breasts, cut into 1 inch cubes"
         ],
-        "instructions": """Sauté onion and garlic. Add chicken and cook until browned. Stir in coconut milk and curry powder. Simmer for 15 minutes. Serve with rice."""
+        "instructions": """Heat oil in a large nonstick skillet on medium-high heat. Add chicken; cook and stir for 7 to 8 minutes or until lightly browned.
+Stir in Skillet Sauce. Reduce heat to low and simmer for 5 minutes or until chicken is 
+cooked through. Serve with cooked rice, if desired."""
+    },
+    {
+        "name": "Herb Roasted Chicken",
+        "image": "images2/30.png",
+        "cuisine": "American",
+        "rating": 5,
+        "ingredients": [
+            "1 package McCormick® Herb Roasted Chicken Oven Bake Sauce",
+            "1 1/2 pounds boneless chicken breasts", 
+            "2 cups potatoes, cut into 1-inch pieces",
+            "1 cup carrots, peeled and cut into 1/2 inch pieces"
+        ],
+        "instructions": """Place chicken and vegetables in a 13x9-inch baking pan.
+Pour Sauce evenly over chicken and vegetables.
+Bake in preheated 400°F oven 40 minutes or until chicken is cooked through and vegetables are tender. Stir sauce and spoon over chicken and vegetables before serving.
+"""
+    },
+    {
+        "name": "Easy Pork Tacos",
+        "image": "images2/31.png",
+        "cuisine": "Mexican",
+        "rating": 5,
+        "ingredients": [
+            "1 tablespoon oil",
+            "1 pound boneless pork chops, cut into 1/2-inch cubes",
+            "1 package McCormick® Original Taco Seasoning Mix",
+            "1/2 cup water",
+            "12 (6-inch) corn tortillas, warmed"
+        ],
+        "instructions": """Heat oil in large skillet on medium heat. Add pork; cook and stir 3 to 5 minutes or until no longer pink.
+Stir in Seasoning Mix and water. Bring to boil. Reduce heat to low; simmer 5 to 7 minutes or until most of liquid is absorbed, stirring occasionally.
+Spoon into warm tortillas and serve with desired toppings.
+"""
     },
     {
         "name": "White Bean Chicken Chili",
@@ -608,17 +636,20 @@ all_recipes = [
         "cuisine": "American",
         "rating": 5,
         "ingredients": [
-            "1 tbsp oil",
-            "1 lb boneless chicken breasts, diced",
-            "1 packet white chicken chili seasoning mix",
+            "1 tablespoon oil",
+            "1 pound boneless skinless chicken breasts, cut into 1/2-inch cubes",
+            "1 package McCormick® White Chicken Chili Seasoning Mix",
             "1 cup water",
-            "1 can white beans, undrained"
+            "1 can (15 to 16 ounces) white beans, undrained"
+
         ],
-        "instructions": """Heat oil in a skillet. Cook chicken until no longer pink. Add seasoning mix, water, and beans. Simmer for 10 minutes. Serve with toppings of choice."""
+        "instructions": """Heat oil in large skillet on medium-high heat. Add chicken; cook and stir 3 to 5 minutes or until no longer pink.
+Stir in Seasoning Mix, water and beans. Bring to boil. Reduce heat to low; cover and simmer 10 minutes or until chicken is cooked through. Serve with desired toppings.
+"""
     },
     {
         "name": "Avocado Toast",
-        "image": "images2/33.png",
+        "image": "images2/33.jpg",
         "cuisine": "American",
         "rating": 5,
         "ingredients": [
@@ -628,26 +659,32 @@ all_recipes = [
             "Pepper",
             "Lemon juice"
         ],
-        "instructions": """Toast bread. Mash avocado with salt, pepper, and lemon juice. Spread avocado mixture on toast."""
+        "instructions": """Toast the bread.
+Mash avocado with salt, pepper, and lemon juice.
+Spread avocado mixture on toast.
+"""
     },
-    {
+     {
         "name": "Banana Pancakes",
-        "image": "images2/34.png",
+        "image": "images2/34.jpg",
         "cuisine": "American",
         "rating": 5,
         "ingredients": [
             "1 banana",
             "2 eggs",
             "1/4 tsp baking powder",
-            "Pinch of cinnamon (optional)",
+            "A pinch of cinnamon (optional)",
             "Butter or oil (for cooking)"
         ],
-        "instructions": """Mash banana in a bowl. Whisk in eggs and baking powder. Cook in a greased skillet until golden on both sides."""
+        "instructions": """Mash the banana in a bowl.
+Whisk in the eggs and baking powder until combined.
+Cook in a greased skillet over medium heat until golden on both sides.
+"""
     },
     {
         "name": "Egg Fried Rice",
-        "image": "images2/35.png",
-        "cuisine": "Chinese",
+        "image": "images/friedrice.jpg",
+        "cuisine": "Asian",
         "rating": 5,
         "ingredients": [
             "2 cups cooked rice",
@@ -675,7 +712,7 @@ all_recipes = [
     {
         "name": "Tomato Soup",
         "image": "images2/37.png",
-        "cuisine": "American",
+        "cuisine": "Soup and Salad",
         "rating": 4,
         "ingredients": [
             "1 can crushed tomatoes",
@@ -689,7 +726,7 @@ all_recipes = [
     {
         "name": "Greek Salad",
         "image": "images2/38.png",
-        "cuisine": "Greek",
+        "cuisine": "Soup and Salad",
         "rating": 5,
         "ingredients": [
             "1 cucumber (chopped)",
@@ -717,7 +754,7 @@ all_recipes = [
     {
         "name": "Lentil Soup",
         "image": "images2/40.png",
-        "cuisine": "Middle Eastern",
+        "cuisine": "Soup and Salad",
         "rating": 5,
         "ingredients": [
             "1 cup lentils",
@@ -731,7 +768,7 @@ all_recipes = [
     {
         "name": "Shrimp Scampi",
         "image": "images2/41.png",
-        "cuisine": "Italian-American",
+        "cuisine": "Italian",
         "rating": 5,
         "ingredients": [
             "1 lb shrimp (peeled, deveined)",
@@ -759,7 +796,7 @@ all_recipes = [
     {
         "name": "Tzatziki",
         "image": "images2/43.png",
-        "cuisine": "Greek",
+        "cuisine": "American",
         "rating": 5,
         "ingredients": [
             "1 cup Greek yogurt",
@@ -773,7 +810,7 @@ all_recipes = [
     {
         "name": "Vegetable Stir-Fry",
         "image": "images2/44.png",
-        "cuisine": "Chinese",
+        "cuisine": "Asian",
         "rating": 5,
         "ingredients": [
             "2 cups mixed vegetables (broccoli, bell peppers, carrots)",
@@ -787,7 +824,7 @@ all_recipes = [
     {
         "name": "Beef Stroganoff",
         "image": "images2/45.png",
-        "cuisine": "Russian",
+        "cuisine": "American",
         "rating": 5,
         "ingredients": [
             "1 lb beef sirloin (sliced thinly)",
@@ -801,7 +838,7 @@ all_recipes = [
     {
         "name": "Shepherd's Pie",
         "image": "images2/46.png",
-        "cuisine": "British",
+        "cuisine": "American",
         "rating": 5,
         "ingredients": [
             "1 lb ground beef or lamb",
@@ -815,7 +852,7 @@ all_recipes = [
     {
         "name": "Quinoa Salad",
         "image": "images2/47.png",
-        "cuisine": "Mediterranean",
+        "cuisine": "Soup and Salad",
         "rating": 5,
         "ingredients": [
             "1 cup cooked quinoa",
@@ -829,7 +866,7 @@ all_recipes = [
     {
         "name": "Greek Chicken Gyros",
         "image": "images2/48.png",
-        "cuisine": "Greek",
+        "cuisine": "American",
         "rating": 5,
         "ingredients": [
             "2 chicken breasts (sliced)",
@@ -856,7 +893,7 @@ all_recipes = [
     {
         "name": "Thai Green Curry",
         "image": "images2/50.png",
-        "cuisine": "Thai",
+        "cuisine": "American",
         "rating": 5,
         "ingredients": [
             "1 lb chicken breast (sliced)",

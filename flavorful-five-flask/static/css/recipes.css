@@ -5,6 +5,12 @@
   border-radius: 8px; /* Optional: adds rounded corners */
 }
 
+.filter-response h4 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #674188; /* Match recipe link color */
+  margin-bottom: 20px; /* Optional spacing */
+}
 
 .recipe-title {
   font-size: 0.9rem;
