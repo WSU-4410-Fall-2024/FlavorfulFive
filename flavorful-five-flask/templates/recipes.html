@@ -80,27 +80,28 @@
       </h4>
     </div>
 
-   <!-- Displaying the list of recipes as before -->
-<div class="container mt-4">
-  <div class="row recipe-container">
-    {% if recipes %}
-      {% for recipe in recipes %}
-        <div class="col-md-4">
-          <div class="recipe-card">
-            <a href="{{ url_for('recipe_detail', recipe_name=recipe.name) }}">
-              <img src="{{ url_for('static', filename=recipe.image) }}" alt="{{ recipe.name }}" class="recipe-img">
-              <h5 class="recipe-title">{{ recipe.name }}</h5>
-            </a>
+    <div class="container mt-4">
+      <div class="row recipe-container">
+        {% if recipes %}
+          {% for recipe in recipes %}
+            <div class="col-md-4">
+              <div class="recipe-card">
+                <a href="{{ url_for('recipe_detail', recipe_name=recipe.name) }}">
+                  <img src="{{ url_for('static', filename=recipe.image) }}" alt="{{ recipe.name }}" class="recipe-img">
+                  <h5 class="recipe-title">{{ recipe.name }}</h5>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-12">
+            <p class="no-recipes-message">No recipes found. Try adjusting your search or filters.</p>
           </div>
-        </div>
-      {% endfor %}
-    {% else %}
-      <div class="col-12">
-        <p class="no-recipes-message">No recipes found. Try adjusting your search or filters.</p>
+        {% endif %}
       </div>
-    {% endif %}
-  </div>
-</div>
+    </div>
+    
+    
 
   <footer>
     <p>&copy; 2024 Flavorful Five</p>
