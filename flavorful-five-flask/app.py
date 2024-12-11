@@ -24,6 +24,7 @@ app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')  
 mail = Mail(app)
 key = os.getenv('key') #key for otp
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-default-secret-key')
 
 
@@ -914,7 +915,6 @@ def recipes():
     
     recipes = all_recipes
     
-    # Filter recipes based on search criteria
     if query:
         recipes = [r for r in recipes if query.lower() in r['name'].lower()]
     if cuisine:
@@ -924,22 +924,124 @@ def recipes():
     
     return render_template('recipes.html', recipes=recipes, query=query, cuisine=cuisine, rating=rating)
 
-@app.route('/recipe_detail/<recipe_name>', methods=['GET'])
+@app.route('/recipe_detail/<recipe_name>', methods=['GET', 'POST'])
 def recipe_detail(recipe_name):
-    # Get the recipe by name using the helper function
     recipe = get_recipe_by_name(recipe_name, all_recipes)
+    
     if recipe:
+        if request.method == 'POST':
+            selected_ingredients = request.form.getlist('ingredients')  # Get the selected ingredients
+            return redirect(url_for('generateshoppinglist', ingredients=selected_ingredients))
+
         return render_template('recipesfolder.html', recipe=recipe)
+    
     else:
         flash("Recipe not found.", "danger")
         return redirect(url_for('recipes'))
 
 def get_recipe_by_name(recipe_name, all_recipes):
-    # Search for the recipe in the list by matching the name
     for recipe in all_recipes:
         if recipe['name'].lower() == recipe_name.lower():
             return recipe
-    return None  # Return None if no recipe is found
+    return None  
+
+@app.route('/generate_shopping_list', methods=['POST', 'GET'])
+def generateshoppinglist():
+    if request.method == 'POST':
+       
+        selected_ingredients = request.form.getlist('ingredients')  
+        if 'shopping_list' not in session:
+            session['shopping_list'] = []
+        
+        for ingredient in selected_ingredients:
+            if ingredient not in session['shopping_list']:
+                session['shopping_list'].append({'name': ingredient})
+
+        session.modified = True
+        return render_template('generateshoppinglist.html', ingredients=session['shopping_list'])
+    
+    return render_template('generateshoppinglist.html', ingredients=session.get('shopping_list', []))
+
+
+@app.route('/delete_ingredient', methods=['POST'])
+def delete_ingredient():
+    ingredient_to_delete = request.form['ingredient']
+    
+    if 'shopping_list' in session:
+        session['shopping_list'] = [ingredient for ingredient in session['shopping_list'] if ingredient != ingredient_to_delete]
+        session.modified = True
+    return redirect(url_for('generateshoppinglist'))
+
+@app.route('/add_custom_ingredient', methods=['POST'])
+def add_custom_ingredient():
+    ingredient_name = request.form['ingredient_name'].strip()
+    quantity = request.form['ingredient_quantity'].strip()
+    unit = request.form['ingredient_unit'].strip()
+    notes = request.form['ingredient_notes'].strip()
+
+    if not ingredient_name or not quantity:
+        flash('Please provide a valid ingredient name and quantity.', 'danger')
+        return redirect(url_for('generateshoppinglist'))
+
+    if 'shopping_list' not in session:
+        session['shopping_list'] = []
+
+    ingredient = {
+        'name': ingredient_name,
+        'quantity': quantity,
+        'unit': unit if unit else None,  
+        'notes': notes if notes else None  
+    }
+
+    session['shopping_list'].append(ingredient)
+    session.modified = True
+
+    flash('Custom ingredient added!', 'success')
+    return redirect(url_for('generateshoppinglist'))
+
+@app.route('/delete_custom_ingredient', methods=['POST'])
+def delete_custom_ingredient():
+    ingredient_to_delete = request.form['ingredient']
+    
+    if 'shopping_list' in session:
+        session['shopping_list'] = [
+            ingredient for ingredient in session['shopping_list']
+            if isinstance(ingredient, dict) and ingredient.get('name') != ingredient_to_delete
+        ]
+        session.modified = True
+        
+    return redirect(url_for('generateshoppinglist'))
+
+from flask import render_template, request, redirect, url_for, session
+
+@app.route('/edit_ingredient', methods=['POST', 'GET'])
+def edit_ingredient():
+    if request.method == 'POST':
+        ingredient_name = request.form['ingredient_name']
+        
+        ingredient = find_ingredient_by_name(ingredient_name)
+        
+        if ingredient:
+            ingredient['name'] = request.form['ingredient_name']
+            ingredient['quantity'] = request.form['ingredient_quantity']
+            ingredient['unit'] = request.form['ingredient_unit']
+            ingredient['notes'] = request.form['ingredient_notes']
+        
+            session.modified = True 
+            return redirect(url_for('generateshoppinglist'))  
+    
+    ingredient_to_edit = request.args.get('ingredient_name')
+    if ingredient_to_edit:
+        ingredient = find_ingredient_by_name(ingredient_to_edit)
+        return render_template('generateshoppinglist.html', ingredient_to_edit=ingredient)
+    return redirect(url_for('generateshoppinglist'))  
+
+def find_ingredient_by_name(ingredient_name):
+    for ingredient in session.get('shopping_list', []):  
+        if ingredient['name'] == ingredient_name:
+            return ingredient
+    return None
+
 
 
 @app.route('/saved')
@@ -979,7 +1081,7 @@ def verify_2fa():
 def send_2fa_code():
     # Generate time-sensitive 2FA code
     totp = pyotp.TOTP(key, interval=90)
-    code = pyotp.TOTP(key).now()
+    code = totp.now()
     session['2fa_code'] = code
 
     # Send the 2FA code via email
