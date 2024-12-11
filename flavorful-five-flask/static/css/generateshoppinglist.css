@@ -1,0 +1,159 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+h2 {
+    color: #674188; 
+    font-size: 28px;
+    text-align: center;
+}
+
+h3 {
+    color: #674188; 
+    font-size: 28px;
+    font-weight: bold;
+   
+  
+}
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    border-radius: 5px;
+}
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #C3ACD0;
+    color: white;
+}
+
+.btn-success {
+    background-color: #C3ACD0;
+    color: white;
+}
+
+.btn-custom {
+    background-color: #f3c5da; 
+    color: #674188;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none; 
+}
+  
+  .btn-custom:focus {
+    outline: none; 
+  }
+  
+
+@media print {
+    .btn {
+        display: none;
+    }
+    .grocery-links {
+            display: none;
+    }
+    .no-print {
+        display: none; 
+    }
+       
+}
+.grocery-links h4 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #674188; 
+    margin-bottom: 20px;
+}
+.grocery-links a {
+    font-size: 1.5rem; 
+    padding: 16px 32px; 
+    text-transform: none;  
+    margin: 10px; 
+    display: inline-block; 
+    text-decoration: none;  
+    background-color: #674188; 
+    color: white; 
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    min-width: 150px;
+}
+
+.grocery-links .btn {
+    font-size: 0.9rem;
+    margin: 5px;
+    padding: 8px 16px;
+    text-transform: none; 
+    background-color: #6f42c1;
+}
+
+.grocery-links .btn:hover {
+    background-color: #6f42c1;
+    color: white;
+}
+
+.grocery-links .d-flex {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.list-group-item .btn {
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.list-group-item .btn-warning {
+    margin-left: 10px;  
+}
+
+
+.ingredient-notes {
+    margin-left: 20px; 
+    font-style: italic; 
+    margin-top: 5px; 
+    display: block; 
+}
+
+.ingredient-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.d-flex.justify-content-end {
+    margin-left: auto;
+    gap: 10px;
+  }
+
+  .btn-warning {
+    background-color: #6f42c1; 
+    color: white; 
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+.btn-warning:hover {
+    background-color: #5a2d8f; 
+}
