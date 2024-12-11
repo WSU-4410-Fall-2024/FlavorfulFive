@@ -46,6 +46,37 @@ function appendMessage(message, sender) {
     chatLog.scrollTop = chatLog.scrollHeight; 
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const shoppingListForm = document.getElementById('shopping-list-form');
+    const shoppingListContainer = document.getElementById('shopping-list-items');
+
+    shoppingListForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const selectedRecipes = Array.from(document.getElementById('recipes').selectedOptions).map(option => option.value);
+        
+        shoppingListContainer.innerHTML = '';
+
+        selectedRecipes.forEach(recipeName => {
+            const recipe = recipes.find(r => r.name === recipeName);
+            if (recipe) {
+                recipe.ingredients.forEach(ingredient => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = ingredient;
+                    shoppingListContainer.appendChild(listItem);
+                });
+            }
+        });
+    });
+
+
+    document.getElementById('download-list').addEventListener('click', function() {
+        let listItems = Array.from(shoppingListContainer.children).map(li => li.textContent);
+        let doc = new jsPDF();
+        doc.text(listItems.join('\n'), 10, 10);
+        doc.save('shopping-list.pdf');
+    });
+});
+
 function getBotResponse(userMessage) {
     const lowerCaseMessage = userMessage.toLowerCase();
     
