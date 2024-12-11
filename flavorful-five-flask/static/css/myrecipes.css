@@ -59,8 +59,8 @@
   display: none;
   color: green;
   margin-bottom: 10px;
-  text-align: center; /* Centers the text */
-  font-weight: bold;  /* Optional: makes the text bold */
+  text-align: center;
+  font-weight: bold;  
 }
 
 .arrow {
@@ -134,7 +134,7 @@ h5 {
   border-radius: 5px;
 }
 
-/* Smaller Form Controls */
+
 .form-control-sm {
   font-size: 12px;
   padding: 5px;
@@ -180,4 +180,5 @@ footer {
   }
   
 }
+
 

@@ -1,15 +1,15 @@
 .recipe-img {
-  width: 100%; /* Full width of the column */
-  height: 200px; /* Fixed height for uniformity */
-  object-fit: cover; /* Ensures the image covers the area without distortion */
-  border-radius: 8px; /* Optional: adds rounded corners */
+  width: 100%; 
+  height: 200px; 
+  object-fit: cover; 
+  border-radius: 8px; 
 }
 
 .filter-response h4 {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #674188; /* Match recipe link color */
-  margin-bottom: 20px; /* Optional spacing */
+  color: #674188; 
+  margin-bottom: 20px;
 }
 
 .recipe-title {
@@ -44,3 +44,4 @@
     height: 120px;
   }
 }
+
